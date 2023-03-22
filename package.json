@@ -11,7 +11,7 @@
         "url": "https://github.com/app-generator/api-server-django/issues",
         "email": "support@appseed.us"
     },
-    "author": "AppSeed App Generator <support@appseed.us> (https://appseed.us)",
+    "author": "TOTH",
     "engines": {
         "node": ">=10.0.0"
     },
