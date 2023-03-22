@@ -162,13 +162,23 @@ REST_FRAMEWORK = {
 CORS_ALLOW_ALL_ORIGINS=True
 
 # Load the default ones
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000", "https://orca-app-zlgcl.ondigitalocean.app/"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000", "https://orca-app-zlgcl.ondigitalocean.app:8080"]
 
 # Leaded from Environment
 CORS_ALLOWED_ORIGINS_ENV = env("CORS_ALLOWED_ORIGINS", default=None)
 
 if CORS_ALLOWED_ORIGINS_ENV:
     CORS_ALLOWED_ORIGINS += CORS_ALLOWED_ORIGINS_ENV.split(' ')
+    
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+  
 
 
 # ##################################################################### #
