@@ -93,7 +93,7 @@ class BrokerModelViewSet(viewsets.ModelViewSet):
         
 class StrategyModelViewSet(viewsets.ModelViewSet):
     http_method_names = ["get"]
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     serializer_class = StrategyModelSerializer
 
     def list(self, request, *args, **kwargs):
