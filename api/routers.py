@@ -6,6 +6,8 @@ from api.authentication.viewsets import (
     
 )
 from monthlymodel.views import UploadFileViewSet
+from monthlymodel.views import BrokerModelViewSet
+from monthlymodel.views import StrategyModelViewSet
 from rest_framework import routers
 from api.user.viewsets import UserViewSet
 
@@ -22,6 +24,11 @@ router.register(r"checkSession", ActiveSessionViewSet, basename="check-session")
 router.register(r"logout", LogoutViewSet, basename="logout")
 
 router.register(r"uploadmonthlymodel", UploadFileViewSet, basename="uploadmonthlymodel")
+
+router.register(r"addbroker", BrokerModelViewSet, basename="addbroker")
+
+router.register(r"getstrategydata", StrategyModelViewSet, basename="getstrategydata")
+
 
 urlpatterns = [
     *router.urls,

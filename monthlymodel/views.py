@@ -1,68 +1,52 @@
 from django.shortcuts import render
-
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.core.files.storage import FileSystemStorage
 from .serializers import MonthlyDataModelSerializer
+from .serializers import BrokerModelSerializer
+from .serializers import DataStrategyMappingModelSerializer
+from .serializers import StrategyModelSerializer
+from .models import StrategyModel as SM
 import pandas as pd
 import json
 
 class UploadFileViewSet(viewsets.ModelViewSet):
     http_method_names = ["post"]
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = MonthlyDataModelSerializer
 
     def create(self, request, *args, **kwargs):
 
-        # excel_file = request.FILES.get("excel")
-        # print(excel_file.file)
-        # print(type(excel_file))
-
         myfile = request.FILES['excel']
         fs = FileSystemStorage()
         filename = fs.save(myfile.name, myfile)
-        # uploaded_file_url = fs.url(filename)
-        # print(uploaded_file_url)  
+
         print(filename)
         
         empexceldata = pd.read_excel(filename, skiprows=lambda x: x%2 == 0, usecols='B,C,E,F,H,I') 
         df = empexceldata.rename(columns={"LTP as on Dec 01":"LTP","STOCK SYMBOL":"Stock_Symbol","BUY INITIATE":"Buy_Initiate","SELL INITIATE":"Sell_Initiate","TARGET.1":"Sell_Target","TARGET":"Buy_Target"})     
-        # print(empexceldata.to_dict('records'))
+
         json_excel_data = df.to_dict('records')
         json_excel_data_readable = json.dumps(json_excel_data,indent=4)
-        #print(json_excel_data_readable)
-        
-        
 
-        # read the data from the Excel file
-        # df = pd.read_excel()
-
-        # print(df)
-        new_Data =   {
-            "Stock_Symbol": "NMDC",
-            "LTP_Date" : "2023-03-20",
-            "Sell_Initiate": 98.7,
-            "Sell_Target": 97.713,
-            "Buy_Initiate": 119.9,
-            "Buy_Target": 121.099,
-            "LTP": 117.85
-        }
-        # serializer = self.get_serializer(data=new_Data)
-        # serializer.is_valid(raise_exception=True)
-        # filemodel = serializer.save()
-        
-        # print(type(new_Data))
-        # print(type(json_excel_data))
-        # print(type(df.to_dict('records')[0]))
-        # serializer = self.get_serializer(data=json.dumps(df.to_dict('records'),indent=4))
         for each in json_excel_data:
-            #each["LTP_Date"] = "2023-03-20"
+
             t = json.dumps(each)
             print(t)
             serializer = self.get_serializer(data=each)
+            
+            
             serializer.is_valid(raise_exception=True)
+            serializer2.is_valid(raise_exception=True)
+            
             filemodel = serializer.save()
+            
+            
+            serializer2 = DataStrategyMappingModelSerializer.get_serializer(data=each)
+            
+            
 
         return Response(
             {
@@ -73,3 +57,52 @@ class UploadFileViewSet(viewsets.ModelViewSet):
             status=status.HTTP_201_CREATED,
         )
 
+
+class BrokerModelViewSet(viewsets.ModelViewSet):
+    http_method_names = ["post"]
+    permission_classes = (IsAuthenticated,)
+    serializer_class = BrokerModelSerializer
+
+    def create(self, request, *args, **kwargs):
+        
+        data = json.loads(request.body)
+        
+        broker_data_from_req = {
+            "Broker_name" : data.get('Broker_name'),
+            "Cust_Id" : data.get('Cust_Id'),
+            "API_Key" : data.get('API_Key'),
+            "API_Secret" : data.get('API_Secret'),
+            "Username" : data.get('Username'),
+            "Password" : data.get('Password'),
+            "Market_Types" : data.get('Market_Types')
+        }
+        
+        serializer = self.get_serializer(data=broker_data_from_req)
+        serializer.is_valid(raise_exception=True)
+        commit_response = serializer.save()
+        
+        return Response(
+            {
+                "success": True,
+                "filemodel" : commit_response.id,
+                "msg": "Broker Added To Your Account!",
+            },
+            status=status.HTTP_201_CREATED,
+        )
+        
+        
+class StrategyModelViewSet(viewsets.ModelViewSet):
+    http_method_names = ["get"]
+    permission_classes = (IsAuthenticated,)
+    serializer_class = StrategyModelSerializer
+
+    def list(self, request, *args, **kwargs):
+
+        queryset = SM.objects.all()
+        print(queryset)
+        serializer  = StrategyModelSerializer(queryset, many=True)
+        print(serializer)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
