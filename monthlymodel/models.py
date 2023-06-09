@@ -43,3 +43,12 @@ class DataStrategyMappingModel(models.Model):
     Month_Data_Model_id = models.TextField()
     Strategy_id = models.TextField()
     
+class AlertDataModel(models.Model):
+
+    id = models.AutoField(primary_key = True)
+    Stock_Symbol = models.TextField()
+    LPT_Date = models.DateField(auto_now_add=True, blank=True)
+    Buy_Initiate = models.FloatField()
+    Buy_Target = models.FloatField()
+    Buy_Initiate_Flag = models.BooleanField(default=True)
+    Buy_Target_Flag = models.BooleanField(default=False)
