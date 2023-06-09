@@ -3,6 +3,7 @@ from .models import MonthlyDataModel
 from .models import StrategyModel
 from .models import BrokerModel
 from .models import DataStrategyMappingModel
+from .models import AlertDataModel
 
 class MonthlyDataModelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,4 +23,9 @@ class BrokerModelSerializer(serializers.ModelSerializer):
 class DataStrategyMappingModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = DataStrategyMappingModel
+        fields = '__all__'
+        
+class AlertDataModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AlertDataModel
         fields = '__all__'
