@@ -15,10 +15,11 @@ import json
 class UploadFileViewSet(viewsets.ModelViewSet):
     http_method_names = ["post"]
     permission_classes = (IsAuthenticated,)
+    # permission_classes = (AllowAny,)
     serializer_class = MonthlyDataModelSerializer
 
     def create(self, request, *args, **kwargs):
-
+        print("upload strategy function running......")
         myfile = request.FILES['excel']
         fs = FileSystemStorage()
         filename = fs.save(myfile.name, myfile)
@@ -26,28 +27,21 @@ class UploadFileViewSet(viewsets.ModelViewSet):
         print(filename)
         
         empexceldata = pd.read_excel(filename, skiprows=lambda x: x%2 == 0, usecols='B,C,E,F,H,I') 
-        df = empexceldata.rename(columns={"LTP as on Dec 01":"LTP","STOCK SYMBOL":"Stock_Symbol","BUY INITIATE":"Buy_Initiate","SELL INITIATE":"Sell_Initiate","TARGET.1":"Sell_Target","TARGET":"Buy_Target"})     
+        df = empexceldata.rename(columns={"STOCK SYMBOL":"Stock_Symbol","BUY INITIATE":"Buy_Initiate","SELL INITIATE":"Sell_Initiate","TARGET.1":"Sell_Target","TARGET":"Buy_Target"})     
 
         json_excel_data = df.to_dict('records')
-        json_excel_data_readable = json.dumps(json_excel_data,indent=4)
+        # json_excel_data_readable = json.dumps(json_excel_data,indent=4)
 
         for each in json_excel_data:
 
             t = json.dumps(each)
             print(t)
             serializer = self.get_serializer(data=each)
-            
-            
             serializer.is_valid(raise_exception=True)
-            serializer2.is_valid(raise_exception=True)
+            # serializer2.is_valid(raise_exception=True)
+            filemodel = serializer.save()     
+            # serializer2 = DataStrategyMappingModelSerializer.get_serializer(data=each)
             
-            filemodel = serializer.save()
-            
-            
-            serializer2 = DataStrategyMappingModelSerializer.get_serializer(data=each)
-            
-            
-
         return Response(
             {
                 "success": True,
