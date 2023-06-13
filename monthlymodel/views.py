@@ -20,20 +20,24 @@ class UploadFileViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         print("upload strategy function running......")
+        form_Data = request.POST
+        market = form_Data.get('market').upper()
+        print(market)
         myfile = request.FILES['excel']
         fs = FileSystemStorage()
         filename = fs.save(myfile.name, myfile)
 
         print(filename)
         
-        empexceldata = pd.read_excel(filename, skiprows=lambda x: x%2 == 0, usecols='B,C,E,F,H,I') 
+        empexceldata = pd.read_excel(filename, usecols='B,C,E,F,H,I') 
         df = empexceldata.rename(columns={"STOCK SYMBOL":"Stock_Symbol","BUY INITIATE":"Buy_Initiate","SELL INITIATE":"Sell_Initiate","TARGET.1":"Sell_Target","TARGET":"Buy_Target"})     
 
         json_excel_data = df.to_dict('records')
         # json_excel_data_readable = json.dumps(json_excel_data,indent=4)
 
         for each in json_excel_data:
-
+            
+            each['Market_Type'] = market;
             t = json.dumps(each)
             print(t)
             serializer = self.get_serializer(data=each)
