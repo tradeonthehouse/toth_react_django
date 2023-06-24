@@ -7,7 +7,7 @@ from api.authentication.viewsets import (
 )
 from monthlymodel.views import UploadFileViewSet
 from monthlymodel.views import BrokerModelViewSet
-from monthlymodel.views import StrategyModelViewSet,PositionalDataModelSet
+from monthlymodel.views import StrategyModelViewSet,PositionalDataModelSet,AuthMeViewSet
 from rest_framework import routers
 from api.user.viewsets import UserViewSet
 
@@ -30,6 +30,8 @@ router.register(r"addbroker", BrokerModelViewSet, basename="addbroker")
 router.register(r"getstrategydata", StrategyModelViewSet, basename="getstrategydata")
 
 router.register(r"getpositionaldata", PositionalDataModelSet, basename="getpositionaldata")
+
+router.register(r"authme", AuthMeViewSet, basename="authme")
 
 urlpatterns = [
     *router.urls,

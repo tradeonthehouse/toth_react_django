@@ -9,6 +9,8 @@ from .serializers import BrokerModelSerializer
 from .serializers import DataStrategyMappingModelSerializer
 from .serializers import StrategyModelSerializer,PositionalDataModelSerializer
 from .models import StrategyModel as SM,PositionalDataModel as PM
+from api.user.serializers import UserSerializer
+
 import pandas as pd
 import json
 
@@ -144,4 +146,17 @@ class PositionalDataModelSet(viewsets.ModelViewSet):
             },
             status=status.HTTP_201_CREATED,
         )
-    
+        
+class AuthMeViewSet(viewsets.ModelViewSet):
+    http_method_names = ["get"]
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
+
+    def list(self, request, *args, **kwargs):
+        
+        serializer = UserSerializer(request.user)
+        print(serializer)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
