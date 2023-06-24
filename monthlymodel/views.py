@@ -129,8 +129,12 @@ class PositionalDataModelSet(viewsets.ModelViewSet):
         
         data = json.loads(request.body)
         
+        imageFile = request.FILES['image']
+        fs = FileSystemStorage()
+        filename = fs.save(imageFile.name, imageFile)
+
         broker_data_from_req = {
-            "Image" : data.get('Image'),
+            # "Image" : data.get('Image'),
             "Market_Type" : data.get('Market_Type'),
             "Header" : data.get('Header'),
             "Description" : data.get('Description')
