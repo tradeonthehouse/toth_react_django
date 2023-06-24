@@ -7,8 +7,8 @@ from django.core.files.storage import FileSystemStorage
 from .serializers import MonthlyDataModelSerializer
 from .serializers import BrokerModelSerializer
 from .serializers import DataStrategyMappingModelSerializer
-from .serializers import StrategyModelSerializer
-from .models import StrategyModel as SM
+from .serializers import StrategyModelSerializer,PositionalDataModelSerializer
+from .models import StrategyModel as SM,PositionalDataModel as PM
 import pandas as pd
 import json
 
@@ -104,3 +104,44 @@ class StrategyModelViewSet(viewsets.ModelViewSet):
             serializer.data,
             status=status.HTTP_200_OK,
         )
+        
+class PositionalDataModelSet(viewsets.ModelViewSet):
+    http_method_names = ["get","post"]
+    permission_classes = (AllowAny,)
+    serializer_class = PositionalDataModelSerializer
+
+    def list(self, request, *args, **kwargs):
+
+        queryset = PM.objects.all()
+        print(queryset)
+        serializer  = PositionalDataModelSerializer(queryset, many=True)
+        print(serializer)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
+        
+    def create(self, request, *args, **kwargs):
+        
+        data = json.loads(request.body)
+        
+        broker_data_from_req = {
+            "Image" : data.get('Image'),
+            "Market_Type" : data.get('Market_Type'),
+            "Header" : data.get('Header'),
+            "Description" : data.get('Description')
+        }
+        
+        serializer = self.get_serializer(data=broker_data_from_req)
+        serializer.is_valid(raise_exception=True)
+        commit_response = serializer.save()
+        
+        return Response(
+            {
+                "success": True,
+                "filemodel" : commit_response.id,
+                "msg": "Positional Data added Succesfully!",
+            },
+            status=status.HTTP_201_CREATED,
+        )
+    

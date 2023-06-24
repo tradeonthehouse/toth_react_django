@@ -52,3 +52,11 @@ class AlertDataModel(models.Model):
     Buy_Target = models.FloatField()
     Buy_Initiate_Flag = models.BooleanField(default=True)
     Buy_Target_Flag = models.BooleanField(default=False)
+
+class PositionalDataModel(models.Model):
+
+    id = models.AutoField(primary_key = True)
+    Image = models.BinaryField(null=True)
+    Market_Type = models.TextField()
+    Header = models.TextField()
+    Description = models.TextField()
