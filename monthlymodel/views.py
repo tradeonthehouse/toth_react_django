@@ -127,10 +127,11 @@ class PositionalDataModelSet(viewsets.ModelViewSet):
         
     def create(self, request, *args, **kwargs):
         
-        data = json.loads(request.body)
+        # data = json.loads(request.body)
+        data = request.POST
         
         imageFile = request.FILES['image']
-        fs = FileSystemStorage()
+        fs = FileSystemStorage(location='images/')
         filename = fs.save(imageFile.name, imageFile)
 
         broker_data_from_req = {
