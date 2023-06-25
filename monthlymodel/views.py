@@ -10,6 +10,10 @@ from .serializers import DataStrategyMappingModelSerializer
 from .serializers import StrategyModelSerializer,PositionalDataModelSerializer
 from .models import StrategyModel as SM,PositionalDataModel as PM
 from api.user.serializers import UserSerializer
+from django.http import FileResponse, HttpResponse
+from django.utils.encoding import smart_str
+from wsgiref.util import FileWrapper
+import mimetypes
 
 import pandas as pd
 import json
@@ -119,7 +123,9 @@ class PositionalDataModelSet(viewsets.ModelViewSet):
         queryset = PM.objects.filter(Market_Type=market)
         print(queryset)
         serializer  = PositionalDataModelSerializer(queryset, many=True)
-        print(serializer)
+        # print(serializer)
+        
+        
         return Response(
             serializer.data,
             status=status.HTTP_200_OK,
@@ -130,12 +136,12 @@ class PositionalDataModelSet(viewsets.ModelViewSet):
         # data = json.loads(request.body)
         data = request.POST
         
-        imageFile = request.FILES['image']
-        fs = FileSystemStorage(location='images/')
-        filename = fs.save(imageFile.name, imageFile)
+        imageFile = request.FILES['Image']
+        # fs = FileSystemStorage(location='static/images/')
+        # filename = fs.save(imageFile.name, imageFile)
 
         broker_data_from_req = {
-            # "Image" : data.get('Image'),
+            "Image" : imageFile,
             "Market_Type" : data.get('Market_Type'),
             "Header" : data.get('Header'),
             "Description" : data.get('Description')
@@ -167,3 +173,5 @@ class AuthMeViewSet(viewsets.ModelViewSet):
             serializer.data,
             status=status.HTTP_200_OK,
         )
+        
+
