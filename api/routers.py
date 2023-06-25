@@ -29,6 +29,8 @@ router.register(r"addbroker", BrokerModelViewSet, basename="addbroker")
 
 router.register(r"getstrategydata", StrategyModelViewSet, basename="getstrategydata")
 
+router.register(r"getpositionaldata", PositionalDataModelSet, basename="getpositionaldata")
+
 router.register(r"authme", AuthMeViewSet, basename="authme")
 
 urlpatterns = [

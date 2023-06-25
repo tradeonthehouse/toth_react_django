@@ -7,7 +7,6 @@ urlpatterns = [
     path("api/users/", include(("api.routers", "api"), namespace="api")),
     path('getstrategydata/', StrategyModelViewSet.as_view({'get': 'list'}), name='mymodel-list'),
     path('positionalimage/<int:id>/',PositionalImageDownload.as_view()),
-    path('getpositionaldata/',PositionalDataModelSet.as_view()),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
