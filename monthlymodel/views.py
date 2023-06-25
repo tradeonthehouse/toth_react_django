@@ -118,13 +118,13 @@ class PositionalDataModelSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
 
-        data = json.loads(request.body)
+        data = request.GET
         market = data.get('Market_Type')
+        print(market)
         queryset = PM.objects.filter(Market_Type=market)
-        print(queryset)
+        # print(queryset)
         serializer  = PositionalDataModelSerializer(queryset, many=True)
-        # print(serializer)
-        
+        print(serializer)
         
         return Response(
             serializer.data,
