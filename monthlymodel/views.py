@@ -1,3 +1,4 @@
+import mimetypes
 from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets, status
@@ -11,9 +12,8 @@ from .serializers import StrategyModelSerializer,PositionalDataModelSerializer
 from .models import StrategyModel as SM,PositionalDataModel as PM
 from api.user.serializers import UserSerializer
 from django.http import FileResponse, HttpResponse
-from django.utils.encoding import smart_str
+from rest_framework import generics
 from wsgiref.util import FileWrapper
-import mimetypes
 
 import pandas as pd
 import json
@@ -173,5 +173,16 @@ class AuthMeViewSet(viewsets.ModelViewSet):
             serializer.data,
             status=status.HTTP_200_OK,
         )
+        
+class PositionalImageDownload(generics.ListAPIView):
+
+    def get(self, request, id, format=None):
+        queryset = PM.objects.get(id=id)
+        file_handle = queryset.Image.path
+        print(queryset.Image.name)
+        document = open(file_handle, 'rb')
+        response = HttpResponse(FileWrapper(document), content_type='image/jpeg')
+        response['Content-Disposition'] = 'attachment; filename="%s"' % queryset.Image.name
+        return response
         
 
