@@ -159,6 +159,9 @@ STATICFILES_DIRS = [
 ]
 
 
+DEFAULT_FILE_STORAGE = 'db_file_storage.storage.DatabaseFileStorage'
+DB_FILE_STORAGE_BASE_URL = '/media/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

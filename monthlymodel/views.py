@@ -139,6 +139,8 @@ class PositionalDataModelSet(viewsets.ModelViewSet):
         imageFile = request.FILES['Image']
         # fs = FileSystemStorage(location='static/images/')
         # filename = fs.save(imageFile.name, imageFile)
+        
+        print(imageFile)
 
         broker_data_from_req = {
             "Image" : imageFile,
@@ -147,14 +149,26 @@ class PositionalDataModelSet(viewsets.ModelViewSet):
             "Description" : data.get('Description')
         }
         
-        serializer = self.get_serializer(data=broker_data_from_req)
-        serializer.is_valid(raise_exception=True)
-        commit_response = serializer.save()
+        # print(broker_data_from_req)
+        
+        try:
+            commit_response =  PM.objects.create(Image=imageFile,Market_Type=data.get('Market_Type'),
+                                             Header=data.get('Header'),Description = data.get('Description'))
+            commit_response.save()
+        except Exception as e:
+            print(e)
+        
+        print(commit_response)
+        
+        # serializer = self.get_serializer(data=broker_data_from_req)
+        # serializer.is_valid(raise_exception=True)
+        # commit_response = serializer.save()
         
         return Response(
             {
                 "success": True,
-                "filemodel" : commit_response.id,
+                # "filemodel" : commit_response.id,
+                "filemodel" : commit_response.Image.url,
                 "msg": "Positional Data added Succesfully!",
             },
             status=status.HTTP_201_CREATED,
@@ -175,10 +189,12 @@ class AuthMeViewSet(viewsets.ModelViewSet):
         )
         
 class PositionalImageDownload(generics.ListAPIView):
-
+    http_method_names = ["get"]
+    permission_classes = (AllowAny,)
+    
     def get(self, request, id, format=None):
         queryset = PM.objects.get(id=id)
-        file_handle = queryset.Image.path
+        file_handle = queryset.Image
         print(queryset.Image.name)
         document = open(file_handle, 'rb')
         response = HttpResponse(FileWrapper(document), content_type='image/jpeg')
