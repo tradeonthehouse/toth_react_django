@@ -20,7 +20,7 @@ import json
 
 class UploadFileViewSet(viewsets.ModelViewSet):
     http_method_names = ["post"]
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     # permission_classes = (AllowAny,)
     serializer_class = MonthlyDataModelSerializer
 
