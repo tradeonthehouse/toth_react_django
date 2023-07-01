@@ -3,13 +3,14 @@ from api.authentication.viewsets import (
     LoginViewSet,
     ActiveSessionViewSet,
     LogoutViewSet,
-    
 )
 from monthlymodel.views import UploadFileViewSet
 from monthlymodel.views import BrokerModelViewSet
 from monthlymodel.views import StrategyModelViewSet,PositionalDataModelSet,AuthMeViewSet
 from rest_framework import routers
 from api.user.viewsets import UserViewSet
+from django.urls import path, include
+from api.authentication.viewsets.changepass import ChangePasswordView
 
 router = routers.SimpleRouter(trailing_slash=False)
 
@@ -35,4 +36,6 @@ router.register(r"authme", AuthMeViewSet, basename="authme")
 
 urlpatterns = [
     *router.urls,
+    path('change_password/<int:pk>/', ChangePasswordView.as_view(), name='auth_change_password'),
+
 ]
