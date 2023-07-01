@@ -20,7 +20,7 @@ import json
 
 class UploadFileViewSet(viewsets.ModelViewSet):
     http_method_names = ["post"]
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     # permission_classes = (AllowAny,)
     serializer_class = MonthlyDataModelSerializer
 
@@ -113,7 +113,7 @@ class StrategyModelViewSet(viewsets.ModelViewSet):
         
 class PositionalDataModelSet(viewsets.ModelViewSet):
     http_method_names = ["get","post"]
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = PositionalDataModelSerializer
 
     def list(self, request, *args, **kwargs):

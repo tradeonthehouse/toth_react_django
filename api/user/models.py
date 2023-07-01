@@ -8,20 +8,20 @@ from django.contrib.auth.models import (
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, email, password=None, **kwargs):
+    def create_user(self, username, email,first_name,last_name, password=None, **kwargs):
         """Create and return a `User` with an email, username and password."""
         if username is None:
             raise TypeError("Users must have a username.")
         if email is None:
             raise TypeError("Users must have an email.")
-
-        user = self.model(username=username, email=self.normalize_email(email))
+        
+        user = self.model(username=username, email=self.normalize_email(email),first_name=first_name,last_name=last_name)
         user.set_password(password)
         user.save(using=self._db)
 
         return user
 
-    def create_superuser(self, username, email, password):
+    def create_superuser(self, username, email, password,first_name,last_name):
         """
         Create and return a `User` with superuser (admin) permissions.
         """
@@ -32,7 +32,7 @@ class UserManager(BaseUserManager):
         if username is None:
             raise TypeError("Superusers must have an username.")
 
-        user = self.create_user(username, email, password)
+        user = self.create_user(username, email, password,first_name,last_name)
         user.is_superuser = True
         user.is_staff = True
         user.save(using=self._db)
@@ -46,6 +46,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True)
+    first_name = models.CharField(max_length=100,null=True)
+    last_name = models.CharField(max_length=100,null=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]

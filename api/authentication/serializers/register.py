@@ -8,10 +8,12 @@ class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(min_length=4, max_length=128, write_only=True)
     username = serializers.CharField(max_length=255, required=True)
     email = serializers.EmailField(required=True)
+    first_name = serializers.CharField(max_length=100)
+    last_name = serializers.CharField(max_length=100)
 
     class Meta:
         model = User
-        fields = ["id", "username", "password", "email", "is_active", "date"]
+        fields = ["id", "username", "password", "email", "is_active", "date","first_name","last_name"]
 
     def validate_username(self, value):
         try:
