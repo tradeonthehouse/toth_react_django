@@ -181,7 +181,7 @@ class PositionalDataModelSet(viewsets.ModelViewSet):
                     "success": False,
                     "msg": "Only Image files are allowed!",
                 },
-                status=status.HTTP_201_CREATED,)
+                status=status.HTTP_400_BAD_REQUEST,)
         except Exception as e:
             print(e)
             return Response(
@@ -189,7 +189,7 @@ class PositionalDataModelSet(viewsets.ModelViewSet):
                 "success": False,
                 "msg": "Positional Data Failed to Upload!",
             },
-            status=status.HTTP_201_CREATED,)
+            status=status.HTTP_400_BAD_REQUEST,)
             
         broker_data_from_req = {
             "Image" : url,
