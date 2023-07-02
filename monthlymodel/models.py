@@ -57,7 +57,7 @@ class AlertDataModel(models.Model):
 class PositionalDataModel(models.Model):
 
     id = models.AutoField(primary_key = True)
-    Image = models.FileField()
+    Image = models.TextField()
     Market_Type = models.TextField()
     Header = models.TextField()
     Description = models.TextField()
