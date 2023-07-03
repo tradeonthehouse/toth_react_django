@@ -18,6 +18,7 @@ from wsgiref.util import FileWrapper
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import storage
+from firebase_admin import db
 import random
 import string
 
@@ -25,9 +26,7 @@ import pandas as pd
 import json
 
 cred = credentials.Certificate("toth-47f23-firebase-adminsdk-y8iji-4a0f8e77a6.json")
-firebase_admin.initialize_app(cred, {
-    'storageBucket': 'toth-47f23.appspot.com'
-})
+firebase_admin.initialize_app(cred,{"databaseURL": "https://toth-47f23-default-rtdb.asia-southeast1.firebasedatabase.app/"})
 
 class UploadFileViewSet(viewsets.ModelViewSet):
     http_method_names = ["post"]
@@ -242,3 +241,23 @@ class PositionalImageDownload(generics.ListAPIView):
         return response
         
 
+class StockSymbolImagesDownload(generics.ListAPIView):
+    http_method_names = ["get"]
+    permission_classes = (AllowAny,)
+    
+    def get(self, request, stocksymbol, format=None):
+        try:
+            ref = db.reference('/STOCK_SYMBOL')
+            data = ref.get()
+            #print(data.values())
+            for each in data.values():
+                if stocksymbol == each['Stock_Symbol']:
+                    return Response(each['URL'],
+                        status=status.HTTP_200_OK,
+                    )
+        except Exception as e:
+            print(e)
+
+        return Response(
+            status=status.HTTP_200_OK,
+        )
