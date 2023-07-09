@@ -1263,6 +1263,14 @@
         "documentation": {}
     },
     {
+        "label": "StockSymbolImagesDownload",
+        "importPath": "monthlymodel.views",
+        "description": "monthlymodel.views",
+        "isExtraImport": true,
+        "detail": "monthlymodel.views",
+        "documentation": {}
+    },
+    {
         "label": "UserViewSet",
         "importPath": "api.user.viewsets",
         "description": "api.user.viewsets",
@@ -1325,15 +1333,6 @@
         "description": "django.core.wsgi",
         "isExtraImport": true,
         "detail": "django.core.wsgi",
-        "documentation": {}
-    },
-    {
-        "label": "db_file_storage.storage",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "db_file_storage.storage",
-        "description": "db_file_storage.storage",
-        "detail": "db_file_storage.storage",
         "documentation": {}
     },
     {
@@ -1420,6 +1419,14 @@
     },
     {
         "label": "storage",
+        "importPath": "firebase_admin",
+        "description": "firebase_admin",
+        "isExtraImport": true,
+        "detail": "firebase_admin",
+        "documentation": {}
+    },
+    {
+        "label": "db",
         "importPath": "firebase_admin",
         "description": "firebase_admin",
         "isExtraImport": true,
@@ -2025,7 +2032,7 @@
         "kind": 5,
         "importPath": "core.urls",
         "description": "core.urls",
-        "peekOfCode": "urlpatterns = [\n    path(\"api/users/\", include((\"api.routers\", \"api\"), namespace=\"api\")),\n    path('getstrategydata/', StrategyModelViewSet.as_view({'get': 'list'}), name='mymodel-list'),\n    path('positionalimage/<int:id>/',PositionalImageDownload.as_view()),\n]\nurlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)",
+        "peekOfCode": "urlpatterns = [\n    path(\"api/users/\", include((\"api.routers\", \"api\"), namespace=\"api\")),\n    path('getstrategydata/', StrategyModelViewSet.as_view({'get': 'list'}), name='mymodel-list'),\n    path('positionalimage/<int:id>/',PositionalImageDownload.as_view()),\n    path('stocksymbolimage/<str:stocksymbol>/',StockSymbolImagesDownload.as_view()),\n]\nurlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)",
         "detail": "core.urls",
         "documentation": {}
     },
@@ -2133,7 +2140,7 @@
         "kind": 6,
         "importPath": "monthlymodel.migrations.0011_positionaldatamodel",
         "description": "monthlymodel.migrations.0011_positionaldatamodel",
-        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('monthlymodel', '0010_alertdatamodel'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='PositionalDataModel',\n            fields=[\n                ('id', models.AutoField(primary_key=True, serialize=False)),\n                ('Image', models.FileField(storage=db_file_storage.storage.DatabaseFileStorage(), upload_to='')),",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('monthlymodel', '0010_alertdatamodel'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='PositionalDataModel',\n            fields=[\n                ('id', models.AutoField(primary_key=True, serialize=False)),\n                #('Image', models.FileField(storage=db_file_storage.storage.DatabaseFileStorage(), upload_to='')),",
         "detail": "monthlymodel.migrations.0011_positionaldatamodel",
         "documentation": {}
     },
@@ -2318,11 +2325,20 @@
         "documentation": {}
     },
     {
+        "label": "StockSymbolImagesDownload",
+        "kind": 6,
+        "importPath": "monthlymodel.views",
+        "description": "monthlymodel.views",
+        "peekOfCode": "class StockSymbolImagesDownload(generics.ListAPIView):\n    http_method_names = [\"get\"]\n    permission_classes = (AllowAny,)\n    def get(self, request, stocksymbol, format=None):\n        try:\n            ref = db.reference('/STOCK_SYMBOL')\n            data = ref.get()\n            #print(data.values())\n            for each in data.values():\n                if stocksymbol == each['Stock_Symbol']:",
+        "detail": "monthlymodel.views",
+        "documentation": {}
+    },
+    {
         "label": "cred",
         "kind": 5,
         "importPath": "monthlymodel.views",
         "description": "monthlymodel.views",
-        "peekOfCode": "cred = credentials.Certificate(\"toth-47f23-firebase-adminsdk-y8iji-4a0f8e77a6.json\")\nfirebase_admin.initialize_app(cred, {\n    'storageBucket': 'toth-47f23.appspot.com'\n})\nclass UploadFileViewSet(viewsets.ModelViewSet):\n    http_method_names = [\"post\"]\n    permission_classes = (IsAuthenticated,)\n    # permission_classes = (AllowAny,)\n    serializer_class = MonthlyDataModelSerializer\n    def create(self, request, *args, **kwargs):",
+        "peekOfCode": "cred = credentials.Certificate(\"toth-47f23-firebase-adminsdk-y8iji-4a0f8e77a6.json\")\nfirebase_admin.initialize_app(cred,{\"databaseURL\": \"https://toth-47f23-default-rtdb.asia-southeast1.firebasedatabase.app/\"})\nclass UploadFileViewSet(viewsets.ModelViewSet):\n    http_method_names = [\"post\"]\n    permission_classes = (IsAuthenticated,)\n    # permission_classes = (AllowAny,)\n    serializer_class = MonthlyDataModelSerializer\n    def create(self, request, *args, **kwargs):\n        print(\"upload strategy function running......\")\n        form_Data = request.POST",
         "detail": "monthlymodel.views",
         "documentation": {}
     },

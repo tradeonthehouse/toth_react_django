@@ -158,7 +158,7 @@ class PositionalDataModelSet(viewsets.ModelViewSet):
         
         def upload_image(file_path, destination_path):
              # Initialize Firebase app
-            bucket = storage.bucket()
+            bucket = storage.bucket('toth-47f23.appspot.com')
             blob = bucket.blob(destination_path)
             # blob.upload_from_string(
             #     image_data,
