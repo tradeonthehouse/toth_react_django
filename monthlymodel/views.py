@@ -259,14 +259,18 @@ class StockSymbolImagesDownload(generics.ListAPIView):
                 url.append(each.split('?')[0])
                 
         print(url)
-        msg = ''
+        msg =  None
         for each in url:
-            if '.svg' in each:
+            if '.png' in each:
                 msg = each
                 break
-            elif '.png' in each:
+            elif '.svg' in each:
                 msg = each
-                        
+        if msg is None:                
+            return Response(
+            'Image Not Found',
+            status=status.HTTP_404_NOT_FOUND,
+        )
         return Response(
             msg,
             status=status.HTTP_200_OK,
