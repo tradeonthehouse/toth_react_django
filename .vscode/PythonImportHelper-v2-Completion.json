@@ -2329,7 +2329,7 @@
         "kind": 6,
         "importPath": "monthlymodel.views",
         "description": "monthlymodel.views",
-        "peekOfCode": "class StockSymbolImagesDownload(generics.ListAPIView):\n    http_method_names = [\"get\"]\n    permission_classes = (AllowAny,)\n    def get(self, request, stocksymbol, format=None):\n        try:\n            ref = db.reference('/STOCK_SYMBOL')\n            data = ref.get()\n            #print(data.values())\n            for each in data.values():\n                if stocksymbol == each['Stock_Symbol']:",
+        "peekOfCode": "class StockSymbolImagesDownload(generics.ListAPIView):\n    http_method_names = [\"get\"]\n    permission_classes = (AllowAny,)\n    def get(self, request, stocksymbol, format=None):\n        ref = db.reference('/Company_Stock_Symbol/'+stocksymbol)\n        data = ref.get()\n        print(data)\n        url = []\n        images = data['images']\n        for each  in images:",
         "detail": "monthlymodel.views",
         "documentation": {}
     },

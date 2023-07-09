@@ -246,18 +246,28 @@ class StockSymbolImagesDownload(generics.ListAPIView):
     permission_classes = (AllowAny,)
     
     def get(self, request, stocksymbol, format=None):
-        try:
-            ref = db.reference('/STOCK_SYMBOL')
-            data = ref.get()
-            #print(data.values())
-            for each in data.values():
-                if stocksymbol == each['Stock_Symbol']:
-                    return Response(each['URL'],
-                        status=status.HTTP_200_OK,
-                    )
-        except Exception as e:
-            print(e)
-
+        ref = db.reference('/Company_Stock_Symbol/'+stocksymbol)
+        data = ref.get()
+        print(data)
+        
+        url = []
+        
+        images = data['images']
+        for each  in images:
+            sub_strings = ['.D-','_BIG']
+            if all(sub not in each for sub in sub_strings):
+                url.append(each.split('?')[0])
+                
+        print(url)
+        msg = ''
+        for each in url:
+            if '.svg' in each:
+                msg = each
+                break
+            elif '.png' in each:
+                msg = each
+                        
         return Response(
+            msg,
             status=status.HTTP_200_OK,
         )
