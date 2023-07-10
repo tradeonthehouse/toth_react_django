@@ -288,7 +288,7 @@ class PerformanceDataViewSet(generics.ListAPIView):
         data = request.GET
         Month = data.get('month')
         Year = data.get('year')
-        
+
         Month = dt.now().strftime('%b') if Month is None else Month
         Year = dt.now().year if Year is None else Year
         
@@ -302,19 +302,20 @@ class PerformanceDataViewSet(generics.ListAPIView):
         
         for each in Paths:
             ref = db.reference(each)
-            data = ref.get()
+            node_data = ref.get()
             
-            for one in data:
-                try:
-                    if (one['Sell_Target_Flag']):
-                        exited_calls = exited_calls + 1
-                except:
-                    if (one['Buy_Target_Flag']):
-                        exited_calls = exited_calls + 1
+            if node_data is not None:
+                for one in node_data:
+                    try:
+                        if (one['Sell_Target_Flag']):
+                            exited_calls = exited_calls + 1
+                    except:
+                        if (one['Buy_Target_Flag']):
+                            exited_calls = exited_calls + 1
             
             total_calls = total_calls + len(data)
             
-        return_data = {'Total_Calls': total_calls, 'Exited_Calls': exited_calls, 'Avg. Duration': "2 Days"}
+        return_data = {'Total_Calls': total_calls, 'Exited_Calls': exited_calls, 'Avg. Duration': '2 Days'}
         
         return Response(
             return_data,
