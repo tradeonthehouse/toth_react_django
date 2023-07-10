@@ -8,7 +8,7 @@ urlpatterns = [
     path('getstrategydata/', StrategyModelViewSet.as_view({'get': 'list'}), name='mymodel-list'),
     path('positionalimage/<int:id>/',PositionalImageDownload.as_view()),
     path('stocksymbolimage/<str:stocksymbol>/',StockSymbolImagesDownload.as_view()),
-    path('getperformancedata/', PerformanceDataViewSet.as_view({'get': 'list'})),
+    path('getperformancedata/', PerformanceDataViewSet.as_view()),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

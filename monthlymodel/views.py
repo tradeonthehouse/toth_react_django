@@ -279,16 +279,15 @@ class StockSymbolImagesDownload(generics.ListAPIView):
             status=status.HTTP_200_OK,
         )
         
-class PerformanceDataViewSet(viewsets.ModelViewSet):
+class PerformanceDataViewSet(generics.ListAPIView):
     http_method_names = ["get"]
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
-    def list(self, request, *args, **kwargs):
-        
+    def get(self, request, *args, **kwargs):
+
         data = request.GET
         Month = data.get('month')
         Year = data.get('year')
-        
         
         Month = dt.now().strftime('%b') if Month is None else Month
         Year = dt.now().year if Year is None else Year
@@ -305,7 +304,7 @@ class PerformanceDataViewSet(viewsets.ModelViewSet):
             ref = db.reference(each)
             data = ref.get()
             
-            for one in each:
+            for one in data:
                 try:
                     if (one['Sell_Target_Flag']):
                         exited_calls = exited_calls + 1
@@ -315,7 +314,7 @@ class PerformanceDataViewSet(viewsets.ModelViewSet):
             
             total_calls = total_calls + len(data)
             
-        return_data = {'Total_Calls': total_calls, 'Exited_Calls': exited_calls}
+        return_data = {'Total_Calls': total_calls, 'Exited_Calls': exited_calls, 'Avg. Duration': "2 Days"}
         
         return Response(
             return_data,
