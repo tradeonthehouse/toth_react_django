@@ -21,12 +21,14 @@ from firebase_admin import storage
 from firebase_admin import db
 import random
 import string
-
+from datetime import datetime as dt
 import pandas as pd
 import json
 
 cred = credentials.Certificate("toth-47f23-firebase-adminsdk-y8iji-4a0f8e77a6.json")
 firebase_admin.initialize_app(cred,{"databaseURL": "https://toth-47f23-default-rtdb.asia-southeast1.firebasedatabase.app/"})
+
+
 
 class UploadFileViewSet(viewsets.ModelViewSet):
     http_method_names = ["post"]
@@ -242,6 +244,7 @@ class PositionalImageDownload(generics.ListAPIView):
         
 
 class StockSymbolImagesDownload(generics.ListAPIView):
+    
     http_method_names = ["get"]
     permission_classes = (AllowAny,)
     
@@ -273,5 +276,48 @@ class StockSymbolImagesDownload(generics.ListAPIView):
         )
         return Response(
             msg,
+            status=status.HTTP_200_OK,
+        )
+        
+class PerformanceDataViewSet(viewsets.ModelViewSet):
+    http_method_names = ["get"]
+    permission_classes = (IsAuthenticated,)
+
+    def list(self, request, *args, **kwargs):
+        
+        data = request.GET
+        Month = data.get('month')
+        Year = data.get('year')
+        
+        
+        Month = dt.now().strftime('%b') if Month is None else Month
+        Year = dt.now().year if Year is None else Year
+        
+        Paths = ["USA-Buy-" + str(Month)+"-"+str(Year),
+            "USA-Sell-" + str(Month)+"-"+str(Year),
+            "INDIA-Sell-" + str(Month)+"-"+str(Year),
+            "INDIA-Buy-" + str(Month)+"-"+str(Year)]
+        
+        total_calls = 0
+        exited_calls = 0
+        
+        for each in Paths:
+            ref = db.reference(each)
+            data = ref.get()
+            
+            for one in each:
+                try:
+                    if (one['Sell_Target_Flag']):
+                        exited_calls = exited_calls + 1
+                except:
+                    if (one['Buy_Target_Flag']):
+                        exited_calls = exited_calls + 1
+            
+            total_calls = total_calls + len(data)
+            
+        return_data = {'Total_Calls': total_calls, 'Exited_Calls': exited_calls}
+        
+        return Response(
+            return_data,
             status=status.HTTP_200_OK,
         )
