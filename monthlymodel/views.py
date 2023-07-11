@@ -5,6 +5,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.core.files.storage import FileSystemStorage
+import typing
 from .serializers import MonthlyDataModelSerializer
 from .serializers import BrokerModelSerializer
 from .serializers import DataStrategyMappingModelSerializer
@@ -249,17 +250,27 @@ class StockSymbolImagesDownload(generics.ListAPIView):
     permission_classes = (AllowAny,)
     
     def get(self, request, stocksymbol, format=None):
-        ref = db.reference('/Company_Stock_Symbol/'+stocksymbol)
-        data = ref.get()
-        print(data)
-        
+        bucket = storage.bucket('toth-47f23.appspot.com')
+        blobs = list(bucket.list_blobs(prefix='Company_Stock_Symbol/'+stocksymbol.upper()+'/'))
+        # print(blobs)
         url = []
-        
-        images = data['images']
-        for each  in images:
+        for each in blobs:
+            print(each.public_url)
             sub_strings = ['.D-','_BIG']
-            if all(sub not in each for sub in sub_strings):
-                url.append(each.split('?')[0])
+            if all(sub not in each.name for sub in sub_strings):
+            #     # print(each.public_url)
+                url.append(each.public_url)
+                
+        
+        # ref = db.reference('/Company_Stock_Symbol/'+stocksymbol)
+        # data = ref.get()
+        # print(data)
+        # url = []
+        # images = data['images']
+        # for each  in images:
+        #     sub_strings = ['.D-','_BIG']
+        #     if all(sub not in each for sub in sub_strings):
+        #         url.append(each.split('?')[0])
                 
         print(url)
         msg =  None
@@ -281,7 +292,7 @@ class StockSymbolImagesDownload(generics.ListAPIView):
         
 class PerformanceDataViewSet(generics.ListAPIView):
     http_method_names = ["get"]
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
 

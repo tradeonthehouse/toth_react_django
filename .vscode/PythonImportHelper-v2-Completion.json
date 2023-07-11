@@ -61,6 +61,15 @@
         "documentation": {}
     },
     {
+        "label": "typing",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "typing",
+        "description": "typing",
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
         "label": "Any",
         "importPath": "typing",
         "description": "typing",
@@ -839,6 +848,14 @@
         "documentation": {}
     },
     {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
         "label": "ObjectDoesNotExist",
         "importPath": "django.core.exceptions",
         "description": "django.core.exceptions",
@@ -1264,6 +1281,14 @@
     },
     {
         "label": "StockSymbolImagesDownload",
+        "importPath": "monthlymodel.views",
+        "description": "monthlymodel.views",
+        "isExtraImport": true,
+        "detail": "monthlymodel.views",
+        "documentation": {}
+    },
+    {
+        "label": "PerformanceDataViewSet",
         "importPath": "monthlymodel.views",
         "description": "monthlymodel.views",
         "isExtraImport": true,
@@ -2032,7 +2057,7 @@
         "kind": 5,
         "importPath": "core.urls",
         "description": "core.urls",
-        "peekOfCode": "urlpatterns = [\n    path(\"api/users/\", include((\"api.routers\", \"api\"), namespace=\"api\")),\n    path('getstrategydata/', StrategyModelViewSet.as_view({'get': 'list'}), name='mymodel-list'),\n    path('positionalimage/<int:id>/',PositionalImageDownload.as_view()),\n    path('stocksymbolimage/<str:stocksymbol>/',StockSymbolImagesDownload.as_view()),\n]\nurlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)",
+        "peekOfCode": "urlpatterns = [\n    path(\"api/users/\", include((\"api.routers\", \"api\"), namespace=\"api\")),\n    path('getstrategydata/', StrategyModelViewSet.as_view({'get': 'list'}), name='mymodel-list'),\n    path('positionalimage/<int:id>/',PositionalImageDownload.as_view()),\n    path('stocksymbolimage/<str:stocksymbol>/',StockSymbolImagesDownload.as_view()),\n    path('getperformancedata/', PerformanceDataViewSet.as_view()),\n]\nurlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)",
         "detail": "core.urls",
         "documentation": {}
     },
@@ -2329,7 +2354,16 @@
         "kind": 6,
         "importPath": "monthlymodel.views",
         "description": "monthlymodel.views",
-        "peekOfCode": "class StockSymbolImagesDownload(generics.ListAPIView):\n    http_method_names = [\"get\"]\n    permission_classes = (AllowAny,)\n    def get(self, request, stocksymbol, format=None):\n        ref = db.reference('/Company_Stock_Symbol/'+stocksymbol)\n        data = ref.get()\n        print(data)\n        url = []\n        images = data['images']\n        for each  in images:",
+        "peekOfCode": "class StockSymbolImagesDownload(generics.ListAPIView):\n    http_method_names = [\"get\"]\n    permission_classes = (AllowAny,)\n    def get(self, request, stocksymbol, format=None):\n        bucket = storage.bucket('toth-47f23.appspot.com')\n        blobs = list(bucket.list_blobs(prefix='Company_Stock_Symbol/'+stocksymbol.upper()+'/'))\n        # print(blobs)\n        url = []\n        for each in blobs:\n            print(each.public_url)",
+        "detail": "monthlymodel.views",
+        "documentation": {}
+    },
+    {
+        "label": "PerformanceDataViewSet",
+        "kind": 6,
+        "importPath": "monthlymodel.views",
+        "description": "monthlymodel.views",
+        "peekOfCode": "class PerformanceDataViewSet(generics.ListAPIView):\n    http_method_names = [\"get\"]\n    permission_classes = (IsAuthenticated,)\n    def get(self, request, *args, **kwargs):\n        data = request.GET\n        Month = data.get('month')\n        Year = data.get('year')\n        Month = dt.now().strftime('%b') if Month is None else Month\n        Year = dt.now().year if Year is None else Year\n        Paths = [\"USA-Buy-\" + str(Month)+\"-\"+str(Year),",
         "detail": "monthlymodel.views",
         "documentation": {}
     },
