@@ -9,7 +9,7 @@ urlpatterns = [
     path('positionalimage/<int:id>/',PositionalImageDownload.as_view()),
     path('stocksymbolimage/<str:stocksymbol>/',StockSymbolImagesDownload.as_view()),
     path('getperformancedata/', PerformanceDataViewSet.as_view()),
-    path('content/posts/',BlogPostModelViewSet.as_view()),
+    path('content/posts/',BlogPostModelViewSet.as_view({'get': 'list', 'post': 'create'})),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
