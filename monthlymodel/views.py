@@ -10,7 +10,7 @@ from .serializers import MonthlyDataModelSerializer
 from .serializers import BrokerModelSerializer
 from .serializers import DataStrategyMappingModelSerializer
 from .serializers import StrategyModelSerializer,PositionalDataModelSerializer, BlogPostDataModelSerializer
-from .models import StrategyModel as SM,PositionalDataModel as PM, BlogPostDataModel as PM
+from .models import StrategyModel as SM,PositionalDataModel as PM, BlogPostDataModel as BM
 from api.user.serializers import UserSerializer
 from django.http import FileResponse, HttpResponse
 from rest_framework import generics
@@ -339,12 +339,12 @@ class BlogPostModelViewSet(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
     serializer_class = BlogPostDataModelSerializer
 
-    def list(self, request, *args, **kwargs):
-
-        queryset = PM.objects.all()
+    def list(self, request, Title, *args, **kwargs):
+        print(Title.replace(' ','-'))
+        queryset = BM.objects.get(Title__iexact=Title.replace(' ','-'))
         #print(queryset)
-        serializer  = BlogPostDataModelSerializer(queryset, many=True)
-        #print(serializer)
+        serializer  = BlogPostDataModelSerializer(queryset)
+        #print(serializer.data)
         return Response(
             serializer.data,
             status=status.HTTP_200_OK,
@@ -356,7 +356,7 @@ class BlogPostModelViewSet(viewsets.ModelViewSet):
         data = request.POST
         
         post_data = {
-            'Title' : data['title'],
+            'Title' : data['title'].replace(' ','-'),
             'Body' : data['contents']
         }
         
