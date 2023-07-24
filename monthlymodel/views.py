@@ -9,8 +9,8 @@ import typing
 from .serializers import MonthlyDataModelSerializer
 from .serializers import BrokerModelSerializer
 from .serializers import DataStrategyMappingModelSerializer
-from .serializers import StrategyModelSerializer,PositionalDataModelSerializer
-from .models import StrategyModel as SM,PositionalDataModel as PM
+from .serializers import StrategyModelSerializer,PositionalDataModelSerializer, BlogPostDataModelSerializer
+from .models import StrategyModel as SM,PositionalDataModel as PM, BlogPostDataModel as PM
 from api.user.serializers import UserSerializer
 from django.http import FileResponse, HttpResponse
 from rest_framework import generics
@@ -331,4 +331,45 @@ class PerformanceDataViewSet(generics.ListAPIView):
         return Response(
             return_data,
             status=status.HTTP_200_OK,
+        )
+        
+        
+class BlogPostModelViewSet(viewsets.ModelViewSet):
+    http_method_names = ["get","post"]
+    permission_classes = (AllowAny,)
+    serializer_class = BlogPostDataModelSerializer
+
+    def list(self, request, *args, **kwargs):
+
+        queryset = PM.objects.all()
+        #print(queryset)
+        serializer  = BlogPostDataModelSerializer(queryset, many=True)
+        #print(serializer)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
+        
+    def create(self, request, *args, **kwargs):
+        
+        # data = json.loads(request.body)
+        data = request.POST
+        
+        post_data = {
+            'Title' : data['title'],
+            'Body' : data['contents']
+        }
+        
+        serializer = self.get_serializer(data=post_data)
+        serializer.is_valid(raise_exception=True)
+        commit_response = serializer.save()
+        
+        return Response(
+            {
+                "success": True,
+                # "filemodel" : commit_response.id,
+                "filemodel" : commit_response.id,
+                "msg": "Positional Data added Succesfully!",
+            },
+            status=status.HTTP_201_CREATED,
         )

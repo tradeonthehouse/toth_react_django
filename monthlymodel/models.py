@@ -62,3 +62,9 @@ class PositionalDataModel(models.Model):
     Header = models.TextField()
     Description = models.TextField()
     
+class BlogPostDataModel(models.Model):
+
+    id = models.AutoField(primary_key = True)
+    Title = models.TextField()
+    Body = models.TextField()
+    Date_Added = models.DateField(auto_now_add=True, blank=True)
