@@ -369,7 +369,7 @@ class BlogPostModelViewSet(viewsets.ModelViewSet):
                 "success": True,
                 # "filemodel" : commit_response.id,
                 "filemodel" : commit_response.id,
-                "msg": "Positional Data added Succesfully!",
+                "msg": "BlogPost Data added Succesfully!",
             },
             status=status.HTTP_201_CREATED,
         )
