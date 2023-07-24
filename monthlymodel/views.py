@@ -341,7 +341,7 @@ class BlogPostModelViewSet(viewsets.ModelViewSet):
 
     def list(self, request, Title, *args, **kwargs):
         print(Title.replace(' ','-'))
-        queryset = BM.objects.get(Title__iexact=Title.replace(' ','-'))
+        queryset = BM.objects.get(Title__iexact=Title.replace('-',' '))
         #print(queryset)
         serializer  = BlogPostDataModelSerializer(queryset)
         #print(serializer.data)
@@ -356,7 +356,7 @@ class BlogPostModelViewSet(viewsets.ModelViewSet):
         data = request.POST
         
         post_data = {
-            'Title' : data['title'].replace(' ','-'),
+            'Title' : data['title'],
             'Body' : data['contents']
         }
         
