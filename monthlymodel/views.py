@@ -350,6 +350,17 @@ class BlogPostModelViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK,
         )
         
+    def list_all(self, request, *args, **kwargs):
+        
+        queryset = BM.objects.all()
+        #print(queryset)
+        serializer  = BlogPostDataModelSerializer(queryset, many=True)
+        #print(serializer.data)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
+        
     def create(self, request, *args, **kwargs):
         
         # data = json.loads(request.body)
