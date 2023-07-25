@@ -340,8 +340,8 @@ class BlogPostModelViewSet(viewsets.ModelViewSet):
     serializer_class = BlogPostDataModelSerializer
 
     def list(self, request, Title, *args, **kwargs):
-        print(Title.replace(' ','-'))
-        queryset = BM.objects.get(Title__iexact=Title.replace('-',' '))
+        
+        queryset = BM.objects.get(URL_Slug__iexact=Title.lower())
         #print(queryset)
         serializer  = BlogPostDataModelSerializer(queryset)
         #print(serializer.data)
