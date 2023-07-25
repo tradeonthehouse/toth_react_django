@@ -368,7 +368,8 @@ class BlogPostModelViewSet(viewsets.ModelViewSet):
         
         post_data = {
             'Title' : data['title'],
-            'Body' : data['contents']
+            'Body' : data['contents'],
+            'URL_Slug' : data['title'].lower().replace(' ','-')
         }
         
         serializer = self.get_serializer(data=post_data)

@@ -67,4 +67,5 @@ class BlogPostDataModel(models.Model):
     id = models.AutoField(primary_key = True)
     Title = models.TextField()
     Body = models.TextField()
+    URL_Slug = models.TextField()
     Date_Added = models.DateField(auto_now_add=True, blank=True)
