@@ -206,6 +206,22 @@
         "documentation": {}
     },
     {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
         "label": "migrations",
         "importPath": "django.db",
         "description": "django.db",
@@ -215,6 +231,22 @@
     },
     {
         "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
         "importPath": "django.db",
         "description": "django.db",
         "isExtraImport": true,
@@ -495,6 +527,62 @@
     },
     {
         "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
         "importPath": "django.db",
         "description": "django.db",
         "isExtraImport": true,
@@ -1280,15 +1368,7 @@
         "documentation": {}
     },
     {
-        "label": "StockSymbolImagesDownload",
-        "importPath": "monthlymodel.views",
-        "description": "monthlymodel.views",
-        "isExtraImport": true,
-        "detail": "monthlymodel.views",
-        "documentation": {}
-    },
-    {
-        "label": "PerformanceDataViewSet",
+        "label": "\\",
         "importPath": "monthlymodel.views",
         "description": "monthlymodel.views",
         "isExtraImport": true,
@@ -1711,6 +1791,15 @@
         "documentation": {}
     },
     {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "api.user.migrations.0005_user_mobile",
+        "description": "api.user.migrations.0005_user_mobile",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('api_user', '0004_auto_20230701_1218'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='user',\n            name='mobile',\n            field=models.CharField(max_length=20, null=True),\n        ),",
+        "detail": "api.user.migrations.0005_user_mobile",
+        "documentation": {}
+    },
+    {
         "label": "UserConfig",
         "kind": 6,
         "importPath": "api.user.apps",
@@ -1733,7 +1822,7 @@
         "kind": 6,
         "importPath": "api.user.models",
         "description": "api.user.models",
-        "peekOfCode": "class User(AbstractBaseUser, PermissionsMixin):\n    username = models.CharField(db_index=True, max_length=255, unique=True)\n    email = models.EmailField(db_index=True, unique=True)\n    is_active = models.BooleanField(default=True)\n    is_staff = models.BooleanField(default=False)\n    date = models.DateTimeField(auto_now_add=True)\n    first_name = models.CharField(max_length=100,null=True)\n    last_name = models.CharField(max_length=100,null=True)\n    USERNAME_FIELD = \"email\"\n    REQUIRED_FIELDS = [\"username\"]",
+        "peekOfCode": "class User(AbstractBaseUser, PermissionsMixin):\n    username = models.CharField(db_index=True, max_length=255, unique=True)\n    email = models.EmailField(db_index=True, unique=True)\n    is_active = models.BooleanField(default=True)\n    is_staff = models.BooleanField(default=False)\n    date = models.DateTimeField(auto_now_add=True)\n    first_name = models.CharField(max_length=100,null=True)\n    last_name = models.CharField(max_length=100,null=True)\n    mobile =models.CharField(max_length=20,null=True)\n    USERNAME_FIELD = \"email\"",
         "detail": "api.user.models",
         "documentation": {}
     },
@@ -1742,7 +1831,7 @@
         "kind": 6,
         "importPath": "api.user.serializers",
         "description": "api.user.serializers",
-        "peekOfCode": "class UserSerializer(serializers.ModelSerializer):\n    date = serializers.DateTimeField(read_only=True)\n    class Meta:\n        model = User\n        fields = [\"id\", \"username\", \"email\", \"date\",\"first_name\",\"last_name\",\"is_superuser\"]\n        read_only_field = [\"id\"]",
+        "peekOfCode": "class UserSerializer(serializers.ModelSerializer):\n    date = serializers.DateTimeField(read_only=True)\n    class Meta:\n        model = User\n        fields = [\"id\", \"username\", \"email\", \"date\",\"first_name\",\"last_name\",\"is_superuser\",\"mobile\"]\n        read_only_field = [\"id\"]",
         "detail": "api.user.serializers",
         "documentation": {}
     },
@@ -2057,7 +2146,7 @@
         "kind": 5,
         "importPath": "core.urls",
         "description": "core.urls",
-        "peekOfCode": "urlpatterns = [\n    path(\"api/users/\", include((\"api.routers\", \"api\"), namespace=\"api\")),\n    path('getstrategydata/', StrategyModelViewSet.as_view({'get': 'list'}), name='mymodel-list'),\n    path('positionalimage/<int:id>/',PositionalImageDownload.as_view()),\n    path('stocksymbolimage/<str:stocksymbol>/',StockSymbolImagesDownload.as_view()),\n    path('getperformancedata/', PerformanceDataViewSet.as_view()),\n]\nurlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)",
+        "peekOfCode": "urlpatterns = [\n    path(\"api/users/\", include((\"api.routers\", \"api\"), namespace=\"api\")),\n    path('getstrategydata/', StrategyModelViewSet.as_view({'get': 'list'}), name='mymodel-list'),\n    path('positionalimage/<int:id>/',PositionalImageDownload.as_view()),\n    path('stocksymbolimage/<str:stocksymbol>/',StockSymbolImagesDownload.as_view()),\n    path('getperformancedata/', PerformanceDataViewSet.as_view()),\n    path('content/posts/',BlogPostModelViewSet.as_view({'post': 'create', 'get': 'list_all'})),\n    path('content/posts/<str:Title>/',BlogPostModelViewSet.as_view({'get': 'list'})),\n    path('subscribestrategy/',UserStrategySubscribeViewSet.as_view({'post': 'create'})),\n]",
         "detail": "core.urls",
         "documentation": {}
     },
@@ -2179,6 +2268,42 @@
         "documentation": {}
     },
     {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "monthlymodel.migrations.0013_blogpostdatamodel",
+        "description": "monthlymodel.migrations.0013_blogpostdatamodel",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('monthlymodel', '0012_alter_positionaldatamodel_image'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='BlogPostDataModel',\n            fields=[\n                ('id', models.AutoField(primary_key=True, serialize=False)),\n                ('Title', models.TextField()),",
+        "detail": "monthlymodel.migrations.0013_blogpostdatamodel",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "monthlymodel.migrations.0014_blogpostdatamodel_url_slug",
+        "description": "monthlymodel.migrations.0014_blogpostdatamodel_url_slug",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('monthlymodel', '0013_blogpostdatamodel'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='blogpostdatamodel',\n            name='URL_Slug',\n            field=models.TextField(default='demo'),\n            preserve_default=False,",
+        "detail": "monthlymodel.migrations.0014_blogpostdatamodel_url_slug",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "monthlymodel.migrations.0015_userstrategysubscribe",
+        "description": "monthlymodel.migrations.0015_userstrategysubscribe",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n        ('monthlymodel', '0014_blogpostdatamodel_url_slug'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='UserStrategySubscribe',\n            fields=[\n                ('id', models.AutoField(primary_key=True, serialize=False)),",
+        "detail": "monthlymodel.migrations.0015_userstrategysubscribe",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "monthlymodel.migrations.0016_rename_userstrategysubscribe_userstrategysubscribemodel",
+        "description": "monthlymodel.migrations.0016_rename_userstrategysubscribe_userstrategysubscribemodel",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n        ('monthlymodel', '0015_userstrategysubscribe'),\n    ]\n    operations = [\n        migrations.RenameModel(\n            old_name='UserStrategySubscribe',\n            new_name='UserStrategySubscribeModel',\n        ),",
+        "detail": "monthlymodel.migrations.0016_rename_userstrategysubscribe_userstrategysubscribemodel",
+        "documentation": {}
+    },
+    {
         "label": "MonthlymodelConfig",
         "kind": 6,
         "importPath": "monthlymodel.apps",
@@ -2237,7 +2362,25 @@
         "kind": 6,
         "importPath": "monthlymodel.models",
         "description": "monthlymodel.models",
-        "peekOfCode": "class PositionalDataModel(models.Model):\n    id = models.AutoField(primary_key = True)\n    Image = models.TextField()\n    Market_Type = models.TextField()\n    Header = models.TextField()\n    Description = models.TextField()",
+        "peekOfCode": "class PositionalDataModel(models.Model):\n    id = models.AutoField(primary_key = True)\n    Image = models.TextField()\n    Market_Type = models.TextField()\n    Header = models.TextField()\n    Description = models.TextField()\nclass BlogPostDataModel(models.Model):\n    id = models.AutoField(primary_key = True)\n    Title = models.TextField()\n    Body = models.TextField()",
+        "detail": "monthlymodel.models",
+        "documentation": {}
+    },
+    {
+        "label": "BlogPostDataModel",
+        "kind": 6,
+        "importPath": "monthlymodel.models",
+        "description": "monthlymodel.models",
+        "peekOfCode": "class BlogPostDataModel(models.Model):\n    id = models.AutoField(primary_key = True)\n    Title = models.TextField()\n    Body = models.TextField()\n    URL_Slug = models.TextField()\n    Date_Added = models.DateField(auto_now_add=True, blank=True)\nclass UserStrategySubscribeModel(models.Model):\n    id = models.AutoField(primary_key = True)\n    user = models.ForeignKey(\"api_user.User\", on_delete=models.CASCADE)\n    Strategy_ID = models.ForeignKey(\"monthlymodel.StrategyModel\",on_delete=models.CASCADE)",
+        "detail": "monthlymodel.models",
+        "documentation": {}
+    },
+    {
+        "label": "UserStrategySubscribeModel",
+        "kind": 6,
+        "importPath": "monthlymodel.models",
+        "description": "monthlymodel.models",
+        "peekOfCode": "class UserStrategySubscribeModel(models.Model):\n    id = models.AutoField(primary_key = True)\n    user = models.ForeignKey(\"api_user.User\", on_delete=models.CASCADE)\n    Strategy_ID = models.ForeignKey(\"monthlymodel.StrategyModel\",on_delete=models.CASCADE)\n    Date_Added = models.DateField(auto_now_add=True, blank=True)",
         "detail": "monthlymodel.models",
         "documentation": {}
     },
@@ -2282,7 +2425,7 @@
         "kind": 6,
         "importPath": "monthlymodel.serializers",
         "description": "monthlymodel.serializers",
-        "peekOfCode": "class AlertDataModelSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = AlertDataModel\n        fields = '__all__'\nclass PositionalDataModelSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = PositionalDataModel\n        fields = '__all__'",
+        "peekOfCode": "class AlertDataModelSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = AlertDataModel\n        fields = '__all__'\nclass PositionalDataModelSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = PositionalDataModel\n        fields = '__all__'\nclass BlogPostDataModelSerializer(serializers.ModelSerializer):\n    class Meta:",
         "detail": "monthlymodel.serializers",
         "documentation": {}
     },
@@ -2291,7 +2434,25 @@
         "kind": 6,
         "importPath": "monthlymodel.serializers",
         "description": "monthlymodel.serializers",
-        "peekOfCode": "class PositionalDataModelSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = PositionalDataModel\n        fields = '__all__'",
+        "peekOfCode": "class PositionalDataModelSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = PositionalDataModel\n        fields = '__all__'\nclass BlogPostDataModelSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = BlogPostDataModel\n        fields = '__all__'\nclass UserStrategySubscribeSerializer(serializers.ModelSerializer):\n    class Meta:",
+        "detail": "monthlymodel.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "BlogPostDataModelSerializer",
+        "kind": 6,
+        "importPath": "monthlymodel.serializers",
+        "description": "monthlymodel.serializers",
+        "peekOfCode": "class BlogPostDataModelSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = BlogPostDataModel\n        fields = '__all__'\nclass UserStrategySubscribeSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = UserStrategySubscribeModel\n        fields = '__all__'",
+        "detail": "monthlymodel.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "UserStrategySubscribeSerializer",
+        "kind": 6,
+        "importPath": "monthlymodel.serializers",
+        "description": "monthlymodel.serializers",
+        "peekOfCode": "class UserStrategySubscribeSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = UserStrategySubscribeModel\n        fields = '__all__'",
         "detail": "monthlymodel.serializers",
         "documentation": {}
     },
@@ -2364,6 +2525,24 @@
         "importPath": "monthlymodel.views",
         "description": "monthlymodel.views",
         "peekOfCode": "class PerformanceDataViewSet(generics.ListAPIView):\n    http_method_names = [\"get\"]\n    permission_classes = (IsAuthenticated,)\n    def get(self, request, *args, **kwargs):\n        data = request.GET\n        Month = data.get('month')\n        Year = data.get('year')\n        Month = dt.now().strftime('%b') if Month is None else Month\n        Year = dt.now().year if Year is None else Year\n        Paths = [\"USA-Buy-\" + str(Month)+\"-\"+str(Year),",
+        "detail": "monthlymodel.views",
+        "documentation": {}
+    },
+    {
+        "label": "BlogPostModelViewSet",
+        "kind": 6,
+        "importPath": "monthlymodel.views",
+        "description": "monthlymodel.views",
+        "peekOfCode": "class BlogPostModelViewSet(viewsets.ModelViewSet):\n    http_method_names = [\"get\",\"post\"]\n    permission_classes = (AllowAny,)\n    serializer_class = BlogPostDataModelSerializer\n    def list(self, request, Title, *args, **kwargs):\n        queryset = BM.objects.get(URL_Slug__iexact=Title.lower())\n        #print(queryset)\n        serializer  = BlogPostDataModelSerializer(queryset)\n        #print(serializer.data)\n        return Response(",
+        "detail": "monthlymodel.views",
+        "documentation": {}
+    },
+    {
+        "label": "UserStrategySubscribeViewSet",
+        "kind": 6,
+        "importPath": "monthlymodel.views",
+        "description": "monthlymodel.views",
+        "peekOfCode": "class UserStrategySubscribeViewSet(viewsets.ModelViewSet):\n    http_method_names = [\"post\"]\n    permission_classes = (IsAuthenticated,)\n    serializer_class = UserStrategySubscribeSerializer\n    def create(self, request, *args, **kwargs):\n        # data = json.loads(request.body)\n        data = request.POST\n        print(data)\n        post_data = {\n            'Strategy_ID' : data['Strategy_ID'],",
         "detail": "monthlymodel.views",
         "documentation": {}
     },

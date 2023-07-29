@@ -3,7 +3,7 @@ from .models import MonthlyDataModel
 from .models import StrategyModel
 from .models import BrokerModel
 from .models import DataStrategyMappingModel
-from .models import AlertDataModel,PositionalDataModel, BlogPostDataModel
+from .models import AlertDataModel,PositionalDataModel, BlogPostDataModel, UserStrategySubscribeModel
 
 
 class MonthlyDataModelSerializer(serializers.ModelSerializer):
@@ -39,4 +39,9 @@ class PositionalDataModelSerializer(serializers.ModelSerializer):
 class BlogPostDataModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlogPostDataModel
+        fields = '__all__'
+        
+class UserStrategySubscribeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserStrategySubscribeModel
         fields = '__all__'

@@ -6,11 +6,11 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.core.files.storage import FileSystemStorage
 import typing
-from .serializers import MonthlyDataModelSerializer
+from .serializers import MonthlyDataModelSerializer, UserStrategySubscribeSerializer
 from .serializers import BrokerModelSerializer
 from .serializers import DataStrategyMappingModelSerializer
 from .serializers import StrategyModelSerializer,PositionalDataModelSerializer, BlogPostDataModelSerializer
-from .models import StrategyModel as SM,PositionalDataModel as PM, BlogPostDataModel as BM
+from .models import BlogPostDataModel as BM, PositionalDataModel as PM, StrategyModel as SM
 from api.user.serializers import UserSerializer
 from django.http import FileResponse, HttpResponse
 from rest_framework import generics
@@ -382,6 +382,37 @@ class BlogPostModelViewSet(viewsets.ModelViewSet):
                 # "filemodel" : commit_response.id,
                 "filemodel" : commit_response.id,
                 "msg": "BlogPost Data added Succesfully!",
+            },
+            status=status.HTTP_201_CREATED,
+        )
+        
+class UserStrategySubscribeViewSet(viewsets.ModelViewSet):
+    http_method_names = ["post"]
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserStrategySubscribeSerializer
+
+    def create(self, request, *args, **kwargs):
+        
+        # data = json.loads(request.body)
+        data = request.POST
+        
+        print(data)
+        
+        post_data = {
+            'Strategy_ID' : data['Strategy_ID'],
+            'user' : request.user.id
+        }
+        
+        serializer = self.get_serializer(data=post_data)
+        serializer.is_valid(raise_exception=True)
+        commit_response = serializer.save()
+        
+        return Response(
+            {
+                "success": True,
+                # "filemodel" : commit_response.id,
+                "filemodel" : commit_response.id,
+                "msg": "Strategy Subscribed Succesfully!",
             },
             status=status.HTTP_201_CREATED,
         )

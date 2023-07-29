@@ -69,3 +69,11 @@ class BlogPostDataModel(models.Model):
     Body = models.TextField()
     URL_Slug = models.TextField()
     Date_Added = models.DateField(auto_now_add=True, blank=True)
+
+class UserStrategySubscribeModel(models.Model):
+    
+    id = models.AutoField(primary_key = True)
+    user = models.ForeignKey("api_user.User", on_delete=models.CASCADE)
+    Strategy_ID = models.ForeignKey("monthlymodel.StrategyModel",on_delete=models.CASCADE)
+    Date_Added = models.DateField(auto_now_add=True, blank=True)
+    
