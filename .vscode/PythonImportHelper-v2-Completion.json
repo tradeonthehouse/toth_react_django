@@ -2146,7 +2146,7 @@
         "kind": 5,
         "importPath": "core.urls",
         "description": "core.urls",
-        "peekOfCode": "urlpatterns = [\n    path(\"api/users/\", include((\"api.routers\", \"api\"), namespace=\"api\")),\n    path('getstrategydata/', StrategyModelViewSet.as_view({'get': 'list'}), name='mymodel-list'),\n    path('positionalimage/<int:id>/',PositionalImageDownload.as_view()),\n    path('stocksymbolimage/<str:stocksymbol>/',StockSymbolImagesDownload.as_view()),\n    path('getperformancedata/', PerformanceDataViewSet.as_view()),\n    path('content/posts/',BlogPostModelViewSet.as_view({'post': 'create', 'get': 'list_all'})),\n    path('content/posts/<str:Title>/',BlogPostModelViewSet.as_view({'get': 'list'})),\n    path('subscribestrategy/',UserStrategySubscribeViewSet.as_view({'post': 'create'})),\n]",
+        "peekOfCode": "urlpatterns = [\n    path(\"api/users/\", include((\"api.routers\", \"api\"), namespace=\"api\")),\n    path('getstrategydata/', StrategyModelViewSet.as_view({'get': 'list'}), name='mymodel-list'),\n    path('positionalimage/<int:id>/',PositionalImageDownload.as_view()),\n    path('stocksymbolimage/<str:stocksymbol>/',StockSymbolImagesDownload.as_view()),\n    path('getperformancedata/', PerformanceDataViewSet.as_view()),\n    path('content/posts/',BlogPostModelViewSet.as_view({'post': 'create', 'get': 'list_all'})),\n    path('content/posts/<str:Title>/',BlogPostModelViewSet.as_view({'get': 'list'})),\n    path('subscribestrategy/',UserStrategySubscribeViewSet.as_view({'post': 'create', 'get': 'list'})),\n]",
         "detail": "core.urls",
         "documentation": {}
     },
@@ -2542,7 +2542,7 @@
         "kind": 6,
         "importPath": "monthlymodel.views",
         "description": "monthlymodel.views",
-        "peekOfCode": "class UserStrategySubscribeViewSet(viewsets.ModelViewSet):\n    http_method_names = [\"post\"]\n    permission_classes = (IsAuthenticated,)\n    serializer_class = UserStrategySubscribeSerializer\n    def create(self, request, *args, **kwargs):\n        # data = json.loads(request.body)\n        data = request.POST\n        print(data)\n        post_data = {\n            'Strategy_ID' : data['Strategy_ID'],",
+        "peekOfCode": "class UserStrategySubscribeViewSet(viewsets.ModelViewSet):\n    http_method_names = [\"post\",\"get\"]\n    permission_classes = (IsAuthenticated,)\n    serializer_class = UserStrategySubscribeSerializer\n    def create(self, request, *args, **kwargs):\n        # data = json.loads(request.body)\n        data = request.POST\n        print(data)\n        post_data = {\n            'Strategy_ID' : data['Strategy_ID'],",
         "detail": "monthlymodel.views",
         "documentation": {}
     },

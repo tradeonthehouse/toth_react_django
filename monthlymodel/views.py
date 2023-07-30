@@ -10,7 +10,7 @@ from .serializers import MonthlyDataModelSerializer, UserStrategySubscribeSerial
 from .serializers import BrokerModelSerializer
 from .serializers import DataStrategyMappingModelSerializer
 from .serializers import StrategyModelSerializer,PositionalDataModelSerializer, BlogPostDataModelSerializer
-from .models import BlogPostDataModel as BM, PositionalDataModel as PM, StrategyModel as SM
+from .models import BlogPostDataModel as BM, PositionalDataModel as PM, StrategyModel as SM,UserStrategySubscribeModel as USSM
 from api.user.serializers import UserSerializer
 from django.http import FileResponse, HttpResponse
 from rest_framework import generics
@@ -387,7 +387,7 @@ class BlogPostModelViewSet(viewsets.ModelViewSet):
         )
         
 class UserStrategySubscribeViewSet(viewsets.ModelViewSet):
-    http_method_names = ["post"]
+    http_method_names = ["post","get"]
     permission_classes = (IsAuthenticated,)
     serializer_class = UserStrategySubscribeSerializer
 
@@ -416,3 +416,33 @@ class UserStrategySubscribeViewSet(viewsets.ModelViewSet):
             },
             status=status.HTTP_201_CREATED,
         )
+    
+    def list(self, request, *args, **kwargs):
+
+        # data = request.GET
+        user = None
+        if request.user:
+            userserializer = UserSerializer(request.user)
+            user =  userserializer.data
+            # print(user)
+            
+            
+            queryset = USSM.objects.filter(user=user['id'])#get(user__iexact=request.user.id)
+            
+            serializer  = UserStrategySubscribeSerializer(queryset, many=True)
+            value = []
+            for each in json.loads(json.dumps(serializer.data)):
+                value.append(each.get('Strategy_ID'))
+            return Response(
+                value,
+                status=status.HTTP_200_OK,
+            )
+        else:
+            return Response(
+                [],
+                status=status.HTTP_200_OK,
+            )
+        
+        # market = data.get('Market_Type')
+        # print(market)
+        
