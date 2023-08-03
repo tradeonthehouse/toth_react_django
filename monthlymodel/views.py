@@ -450,8 +450,16 @@ class UserStrategySubscribeViewSet(viewsets.ModelViewSet):
         userserializer = UserSerializer(request.user)
         user =  userserializer.data
         user_id = user['id']
-        Strategy_Id = data['Strategy_Id']
-        data = json.loads(request.body)
+        
+        # print(user_id)
+        
+        data = request.body.decode('utf-8')
+        # data = json.loads(body_unicode)
+        
+        # data = request.body
+        print(data)
+        Strategy_Id = data.replace('Strategy_ID=','')  #data['Strategy_Id']
+        print(Strategy_Id)
         
         queryset = USSM.objects.filter(user=user_id).get(Strategy_ID_id=Strategy_Id)
         queryset.delete()
