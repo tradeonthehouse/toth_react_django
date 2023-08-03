@@ -387,7 +387,7 @@ class BlogPostModelViewSet(viewsets.ModelViewSet):
         )
         
 class UserStrategySubscribeViewSet(viewsets.ModelViewSet):
-    http_method_names = ["post","get"]
+    http_method_names = ["post","get","delete"]
     permission_classes = (IsAuthenticated,)
     serializer_class = UserStrategySubscribeSerializer
 
@@ -446,3 +446,17 @@ class UserStrategySubscribeViewSet(viewsets.ModelViewSet):
         # market = data.get('Market_Type')
         # print(market)
         
+    def delete(self, request, *args, **kwargs):
+        userserializer = UserSerializer(request.user)
+        user =  userserializer.data
+        user_id = user['id']
+        Strategy_Id = data['Strategy_Id']
+        data = json.loads(request.body)
+        
+        queryset = USSM.objects.filter(user=user_id).get(Strategy_ID_id=Strategy_Id)
+        queryset.delete()
+        
+        return Response(
+                "Deleted!! --->>>   "+"Strategy_Id : "+Strategy_Id,
+                status=status.HTTP_200_OK,
+            )
