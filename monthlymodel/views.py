@@ -22,7 +22,7 @@ from firebase_admin import storage
 from firebase_admin import db
 import random
 import string
-from datetime import datetime as dt
+from datetime import datetime as dt, timedelta, time
 import pandas as pd
 import json
 
@@ -310,6 +310,19 @@ class PerformanceDataViewSet(generics.ListAPIView):
         
         total_calls = 0
         exited_calls = 0
+        time_list = []
+        
+        def get_delta_time(string1,string2):
+            date_format = "%Y-%m-%d %H:%M:%S"
+            # Convert the strings into datetime objects
+            datetime1 = dt.strptime(string1, date_format)
+            datetime2 = dt.strptime(string2, date_format)
+
+            # Calculate the difference
+            time_difference = datetime2 - datetime1
+
+            time_list.append(time_difference)
+            return time_difference
         
         for each in Paths:
             ref = db.reference(each)
@@ -317,16 +330,25 @@ class PerformanceDataViewSet(generics.ListAPIView):
             
             if node_data is not None:
                 for one in node_data:
-                    try:
-                        if (one['Sell_Target_Flag']):
+                    #print(one)
+                    if "Buy" in each:
+                        if (one['Buy_Target_Flag'] is True):
                             exited_calls = exited_calls + 1
-                    except:
-                        if (one['Buy_Target_Flag']):
+                            get_delta_time(one['Buy_Initiate_Timestamp'].split('.')[0], one['Buy_Target_Timestamp'].split('.')[0])
+                    else:
+                        if (one['Sell_Target_Flag'] is True):
                             exited_calls = exited_calls + 1
+                            get_delta_time(one['Sell_Initiate_Timestamp'].split('.')[0], one['Sell_Target_Timestamp'].split('.')[0])
             
-            total_calls = total_calls + len(data)
+            total_calls = total_calls + len(node_data)
+
+        # Calculate the sum of the time deltas
+        total_time = sum(time_list, timedelta())
+
+        # Calculate the average
+        avg_time = total_time / len(time_list)
             
-        return_data = {'Total_Calls': total_calls, 'Exited_Calls': exited_calls, 'Avg. Duration': '2 Days'}
+        return_data = {'Total_Calls': total_calls, 'Exited_Calls': exited_calls, 'Avg. Duration': str(avg_time).split('.')[0]}
         
         return Response(
             return_data,
