@@ -348,7 +348,7 @@ class PerformanceDataViewSet(generics.ListAPIView):
         # Calculate the average
         avg_time = total_time / len(time_list)
             
-        return_data = {'Total_Calls': total_calls, 'Exited_Calls': exited_calls, 'Avg. Duration': str(avg_time).split('.')[0]}
+        return_data = {'Total_Signals': total_calls, 'Target_Hit': exited_calls, 'Avg_Duration': str(avg_time).split('.')[0]}
         
         return Response(
             return_data,
