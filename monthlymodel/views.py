@@ -485,14 +485,30 @@ class UserStrategySubscribeViewSet(viewsets.ModelViewSet):
         # print(market)
         
     def delete(self, request, *args, **kwargs):
+        print("Enter delete func")
         userserializer = UserSerializer(request.user)
         user =  userserializer.data
         user_id = user['id']
         
         Strategy_Id = request.data.get('Strategy_ID')
         
-        queryset = USSM.objects.filter(user=user_id).get(Strategy_ID_id=Strategy_Id)
-        queryset.delete()
+        
+        print(Strategy_Id)
+        try:
+            queryset = USSM.objects.filter(user=user_id).get(Strategy_ID_id=Strategy_Id)
+        except:
+            return Response(
+                "Not found "+"Strategy_Id : "+Strategy_Id,
+                status=status.HTTP_200_OK,
+            )
+            
+        try:
+            queryset.delete()
+        except:
+            return Response(
+                "Not found "+"Strategy_Id : "+Strategy_Id,
+                status=status.HTTP_200_OK,
+            )
         
         return Response(
                 "Deleted!! --->>>   "+"Strategy_Id : "+Strategy_Id,
