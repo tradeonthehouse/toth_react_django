@@ -77,13 +77,39 @@ class UploadFileViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         data = request.GET
         month = data.get('Month')
+        call_type = data.get('Type')
         market_type = data.get('Market_Type')
-        print(month, market_type)
+        #print(month, market_type)
         
-        queryset = MM.objects.filter(Market_Type=market_type)#.filter(LPT_Date=month)
-        
+        queryset = MM.objects.filter(Market_Type=market_type)
+
         serializer  = MonthlyDataModelSerializer(queryset, many=True)
-        print(serializer)
+        if call_type.lower() == 'buy':
+            for each in serializer.data:
+                each.pop('id',None)
+                each.pop('LTP',None)
+                each.pop('LPT_Date',None)
+                each.pop('Sell_Initiate',None)
+                each.pop('Sell_Target',None)
+                each.pop('Market_Type',None)
+                each['Buy_Initiate_Flag'] = False
+                each['Buy_Initiate_Timestamp'] = None
+                each['Buy_Target_Flag'] = False
+                each['Buy_Target_Timestamp'] = None
+        else:
+            for each in serializer.data:
+                each.pop('id',None)
+                each.pop('LTP',None)
+                each.pop('LPT_Date',None)
+                each.pop('Buy_Initiate',None)
+                each.pop('Buy_Target',None)
+                each.pop('Market_Type',None)
+                each['Sell_Initiate_Timestamp'] = None
+                each['Sell_Target_Flag'] = False
+                each['Sell_Target_Timestamp'] = None
+                each['Sell_Initiate_Flag'] = False
+            
+        #print(serializer.data)
         
         return Response(
             serializer.data,
