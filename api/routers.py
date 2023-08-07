@@ -24,7 +24,7 @@ router.register(r"checkSession", ActiveSessionViewSet, basename="check-session")
 
 router.register(r"logout", LogoutViewSet, basename="logout")
 
-router.register(r"uploadmonthlymodel", UploadFileViewSet, basename="uploadmonthlymodel")
+#router.register(r"uploadmonthlymodel", UploadFileViewSet, basename="uploadmonthlymodel")
 
 router.register(r"addbroker", BrokerModelViewSet, basename="addbroker")
 

@@ -10,7 +10,7 @@ from .serializers import MonthlyDataModelSerializer, UserStrategySubscribeSerial
 from .serializers import BrokerModelSerializer
 from .serializers import DataStrategyMappingModelSerializer
 from .serializers import StrategyModelSerializer,PositionalDataModelSerializer, BlogPostDataModelSerializer
-from .models import BlogPostDataModel as BM, PositionalDataModel as PM, StrategyModel as SM,UserStrategySubscribeModel as USSM
+from .models import BlogPostDataModel as BM, PositionalDataModel as PM, StrategyModel as SM,UserStrategySubscribeModel as USSM, MonthlyDataModel as MM
 from api.user.serializers import UserSerializer
 from django.http import FileResponse, HttpResponse
 from rest_framework import generics
@@ -32,7 +32,7 @@ firebase_admin.initialize_app(cred,{"databaseURL": "https://toth-47f23-default-r
 
 
 class UploadFileViewSet(viewsets.ModelViewSet):
-    http_method_names = ["post"]
+    http_method_names = ["post","get"]
     permission_classes = (IsAuthenticated,)
     # permission_classes = (AllowAny,)
     serializer_class = MonthlyDataModelSerializer
@@ -73,6 +73,24 @@ class UploadFileViewSet(viewsets.ModelViewSet):
             },
             status=status.HTTP_201_CREATED,
         )
+        
+    def list(self, request, *args, **kwargs):
+        data = request.GET
+        month = data.get('Month')
+        market_type = data.get('Market_Type')
+        print(month, market_type)
+        
+        queryset = MM.objects.filter(Market_Type=market_type)#.filter(LPT_Date=month)
+        
+        serializer  = MonthlyDataModelSerializer(queryset, many=True)
+        print(serializer)
+        
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
+        
+        
 
 
 class BrokerModelViewSet(viewsets.ModelViewSet):
@@ -446,10 +464,8 @@ class UserStrategySubscribeViewSet(viewsets.ModelViewSet):
         if request.user:
             userserializer = UserSerializer(request.user)
             user =  userserializer.data
-            # print(user)
             
-            
-            queryset = USSM.objects.filter(user=user['id'])#get(user__iexact=request.user.id)
+            queryset = USSM.objects.filter(user=user['id'])
             
             serializer  = UserStrategySubscribeSerializer(queryset, many=True)
             value = []

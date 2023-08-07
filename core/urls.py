@@ -1,7 +1,7 @@
 from django.urls import path, include
 from monthlymodel.views import StrategyModelViewSet,PositionalImageDownload,PositionalDataModelSet,\
     StockSymbolImagesDownload,PerformanceDataViewSet, BlogPostModelViewSet,\
-        UserStrategySubscribeViewSet
+        UserStrategySubscribeViewSet, UploadFileViewSet
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -14,6 +14,7 @@ urlpatterns = [
     path('content/posts/',BlogPostModelViewSet.as_view({'post': 'create', 'get': 'list_all'})),
     path('content/posts/<str:Title>/',BlogPostModelViewSet.as_view({'get': 'list'})),
     path('subscribestrategy/',UserStrategySubscribeViewSet.as_view({'post': 'create', 'get': 'list', 'delete': 'delete'}),),
+    path('uploadmonthlymodel/',UploadFileViewSet.as_view({'post': 'create', 'get': 'list'}),),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
