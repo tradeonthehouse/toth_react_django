@@ -485,19 +485,30 @@ class UserStrategySubscribeViewSet(viewsets.ModelViewSet):
         # print(market)
         
     def delete(self, request, *args, **kwargs):
-        print("Enter delete func")
+
         userserializer = UserSerializer(request.user)
         user =  userserializer.data
         user_id = user['id']
         
         Strategy_Id = request.data.get('Strategy_ID')
         
-        
-        print(Strategy_Id)
-        queryset = USSM.objects.filter(user=user_id).get(Strategy_ID_id=Strategy_Id)
-        queryset.delete()
-        
+        try:
+            queryset = USSM.objects.filter(user=user_id).get(Strategy_ID_id=Strategy_Id)
+            queryset.delete()
+        except:
+            return Response(
+            {
+                "success": False,
+                "msg": "Strategy Delete Failed!!",
+            },
+            status=status.HTTP_200_OK,
+        )
+            
         return Response(
-                "Deleted!! --->>>   "+"Strategy_Id : "+Strategy_Id,
-                status=status.HTTP_200_OK,
-            )
+            {
+                "success": True,
+                "Deleted_Strategy_ID" : Strategy_Id,
+                "msg": "Strategy Deleted Succesfully!",
+            },
+            status=status.HTTP_200_OK,
+        )
