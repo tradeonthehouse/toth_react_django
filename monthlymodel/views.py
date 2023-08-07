@@ -494,21 +494,8 @@ class UserStrategySubscribeViewSet(viewsets.ModelViewSet):
         
         
         print(Strategy_Id)
-        try:
-            queryset = USSM.objects.filter(user=user_id).get(Strategy_ID_id=Strategy_Id)
-        except:
-            return Response(
-                "Not found "+"Strategy_Id : "+Strategy_Id,
-                status=status.HTTP_200_OK,
-            )
-            
-        try:
-            queryset.delete()
-        except:
-            return Response(
-                "Not found "+"Strategy_Id : "+Strategy_Id,
-                status=status.HTTP_200_OK,
-            )
+        queryset = USSM.objects.filter(user=user_id).get(Strategy_ID_id=Strategy_Id)
+        queryset.delete()
         
         return Response(
                 "Deleted!! --->>>   "+"Strategy_Id : "+Strategy_Id,
