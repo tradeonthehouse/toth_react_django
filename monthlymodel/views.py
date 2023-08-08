@@ -417,8 +417,10 @@ class PerformanceDataViewSet(generics.ListAPIView):
                         if (one['Sell_Target_Flag'] is True):
                             exited_calls = exited_calls + 1
                             get_delta_time(one['Sell_Initiate_Timestamp'].split('.')[0], one['Sell_Target_Timestamp'].split('.')[0])
+                            
+                    if one.get('Sell_Initiate_Flag') is True or one.get('Buy_Initiate_Flag') is True:
+                        total_calls = total_calls + 1
             
-            total_calls = total_calls + len(node_data)
 
         # Calculate the sum of the time deltas
         total_time = sum(time_list, timedelta())
