@@ -70,30 +70,32 @@ class UploadFileViewSet(viewsets.ModelViewSet):
 
         for each in json_excel_data:
             
-            each['Market_Type'] = market;
+            each['Market_Type'] = market
             t = json.dumps(each)
             print(t)
+            
+            if any(each_dict['Stock_Symbol'].strip() == each['Stock_Symbol'].strip() for each_dict in alerts_list_buy):
+                print(each['Stock_Symbol'].strip(),' This already exists')
+            else:
+                alert_data = {'Stock_Symbol' : each['Stock_Symbol'].strip(), 'Buy_Initiate' : round(each['Buy_Initiate'],2) ,\
+                    'Buy_Target' : round(each['Buy_Target'],2), 'Buy_Initiate_Flag' : False, \
+                    'Buy_Target_Flag' : False, 'Buy_Initiate_Timestamp' : '','Buy_Target_Timestamp': ''}
+                alerts_list_buy.append(alert_data)
+                
+            if any(each_dict['Stock_Symbol'].strip() == each['Stock_Symbol'].strip() for each_dict in alerts_list_sell):
+                print(each['Stock_Symbol'].strip(),' This already exists')
+            else:
+                alert_data = {'Stock_Symbol' : each['Stock_Symbol'].strip(), 'Sell_Initiate' : round(each['Sell_Initiate'],2) ,\
+                    'Sell_Target' : round(each['Sell_Target'],2), 'Sell_Initiate_Flag' : False, \
+                    'Sell_Target_Flag' : False, 'Sell_Initiate_Timestamp' : '','Sell_Target_Timestamp':''}
+                alerts_list_sell.append(alert_data)
+            
             serializer = self.get_serializer(data=each)
             serializer.is_valid(raise_exception=True)
             # serializer2.is_valid(raise_exception=True)
             filemodel = serializer.save()     
             # serializer2 = DataStrategyMappingModelSerializer.get_serializer(data=each)
             
-            if any(each_dict['Stock_Symbol'].strip() == t['Stock_Symbol'].strip() for each_dict in alerts_list_buy):
-                pass
-            else:
-                alert_data = {'Stock_Symbol' : t['Stock_Symbol'].strip(), 'Buy_Initiate' : round(t['Buy_Initiate'],2) ,\
-                    'Buy_Target' : round(t['Buy_Target'],2), 'Buy_Initiate_Flag' : False, \
-                    'Buy_Target_Flag' : False, 'Buy_Initiate_Timestamp' : None,'Buy_Target_Timestamp':None}
-                alerts_list_buy.append(alert_data)
-                
-            if any(each_dict['Stock_Symbol'].strip() == t['Stock_Symbol'].strip() for each_dict in alerts_list_sell):
-                pass
-            else:
-                alert_data = {'Stock_Symbol' : t['Stock_Symbol'].strip(), 'Sell_Initiate' : round(t['Sell_Initiate'],2) ,\
-                    'Sell_Target' : round(t['Sell_Target'],2), 'Sell_Initiate_Flag' : False, \
-                    'Sell_Target_Flag' : False, 'Sell_Initiate_Timestamp' : None,'Sell_Target_Timestamp':None}
-                alerts_list_sell.append(alert_data)
 
             
         db.reference(buy_fb_path).set(alerts_list_buy)
