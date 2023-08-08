@@ -30,6 +30,9 @@ cred = credentials.Certificate("toth-47f23-firebase-adminsdk-y8iji-4a0f8e77a6.js
 firebase_admin.initialize_app(cred,{"databaseURL": "https://toth-47f23-default-rtdb.asia-southeast1.firebasedatabase.app/"})
 
 
+Day = dt.now().day
+Month = dt.now().strftime('%b')
+Year = dt.now().year
 
 class UploadFileViewSet(viewsets.ModelViewSet):
     http_method_names = ["post","get"]
@@ -53,6 +56,17 @@ class UploadFileViewSet(viewsets.ModelViewSet):
 
         json_excel_data = df.to_dict('records')
         # json_excel_data_readable = json.dumps(json_excel_data,indent=4)
+        
+                
+        buy_fb_path = market+"-Buy-"+str(Month)+"-"+str(Year)
+        sell_fb_path = market+"-Sell-"+str(Month)+"-"+str(Year)
+        
+        alerts_list_buy = db.reference(buy_fb_path).get()
+        if alerts_list_buy is None:
+            alerts_list_buy = []
+        alerts_list_sell = db.reference(sell_fb_path).get()
+        if alerts_list_sell is None:
+            alerts_list_sell = []
 
         for each in json_excel_data:
             
@@ -64,6 +78,26 @@ class UploadFileViewSet(viewsets.ModelViewSet):
             # serializer2.is_valid(raise_exception=True)
             filemodel = serializer.save()     
             # serializer2 = DataStrategyMappingModelSerializer.get_serializer(data=each)
+            
+            if any(each_dict['Stock_Symbol'].strip() == t['Stock_Symbol'].strip() for each_dict in alerts_list_buy):
+                pass
+            else:
+                alert_data = {'Stock_Symbol' : t['Stock_Symbol'].strip(), 'Buy_Initiate' : round(t['Buy_Initiate'],2) ,\
+                    'Buy_Target' : round(t['Buy_Target'],2), 'Buy_Initiate_Flag' : False, \
+                    'Buy_Target_Flag' : False, 'Buy_Initiate_Timestamp' : None,'Buy_Target_Timestamp':None}
+                alerts_list_buy.append(alert_data)
+                
+            if any(each_dict['Stock_Symbol'].strip() == t['Stock_Symbol'].strip() for each_dict in alerts_list_sell):
+                pass
+            else:
+                alert_data = {'Stock_Symbol' : t['Stock_Symbol'].strip(), 'Sell_Initiate' : round(t['Sell_Initiate'],2) ,\
+                    'Sell_Target' : round(t['Sell_Target'],2), 'Sell_Initiate_Flag' : False, \
+                    'Sell_Target_Flag' : False, 'Sell_Initiate_Timestamp' : None,'Sell_Target_Timestamp':None}
+                alerts_list_sell.append(alert_data)
+
+            
+        db.reference(buy_fb_path).set(alerts_list_buy)
+        db.reference(sell_fb_path).set(alerts_list_sell)
             
         return Response(
             {

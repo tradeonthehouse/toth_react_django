@@ -944,6 +944,22 @@
         "documentation": {}
     },
     {
+        "label": "timedelta",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
         "label": "ObjectDoesNotExist",
         "importPath": "django.core.exceptions",
         "description": "django.core.exceptions",
@@ -1867,7 +1883,7 @@
         "kind": 5,
         "importPath": "api.routers",
         "description": "api.routers",
-        "peekOfCode": "router = routers.SimpleRouter(trailing_slash=False)\nrouter.register(r\"edit\", UserViewSet, basename=\"user-edit\")\nrouter.register(r\"register\", RegisterViewSet, basename=\"register\")\nrouter.register(r\"login\", LoginViewSet, basename=\"login\")\nrouter.register(r\"checkSession\", ActiveSessionViewSet, basename=\"check-session\")\nrouter.register(r\"logout\", LogoutViewSet, basename=\"logout\")\nrouter.register(r\"uploadmonthlymodel\", UploadFileViewSet, basename=\"uploadmonthlymodel\")\nrouter.register(r\"addbroker\", BrokerModelViewSet, basename=\"addbroker\")\nrouter.register(r\"getstrategydata\", StrategyModelViewSet, basename=\"getstrategydata\")\nrouter.register(r\"getpositionaldata\", PositionalDataModelSet, basename=\"getpositionaldata\")",
+        "peekOfCode": "router = routers.SimpleRouter(trailing_slash=False)\nrouter.register(r\"edit\", UserViewSet, basename=\"user-edit\")\nrouter.register(r\"register\", RegisterViewSet, basename=\"register\")\nrouter.register(r\"login\", LoginViewSet, basename=\"login\")\nrouter.register(r\"checkSession\", ActiveSessionViewSet, basename=\"check-session\")\nrouter.register(r\"logout\", LogoutViewSet, basename=\"logout\")\n#router.register(r\"uploadmonthlymodel\", UploadFileViewSet, basename=\"uploadmonthlymodel\")\nrouter.register(r\"addbroker\", BrokerModelViewSet, basename=\"addbroker\")\nrouter.register(r\"getstrategydata\", StrategyModelViewSet, basename=\"getstrategydata\")\nrouter.register(r\"getpositionaldata\", PositionalDataModelSet, basename=\"getpositionaldata\")",
         "detail": "api.routers",
         "documentation": {}
     },
@@ -2146,7 +2162,7 @@
         "kind": 5,
         "importPath": "core.urls",
         "description": "core.urls",
-        "peekOfCode": "urlpatterns = [\n    path(\"api/users/\", include((\"api.routers\", \"api\"), namespace=\"api\")),\n    path('getstrategydata/', StrategyModelViewSet.as_view({'get': 'list'}), name='mymodel-list'),\n    path('positionalimage/<int:id>/',PositionalImageDownload.as_view()),\n    path('stocksymbolimage/<str:stocksymbol>/',StockSymbolImagesDownload.as_view()),\n    path('getperformancedata/', PerformanceDataViewSet.as_view()),\n    path('content/posts/',BlogPostModelViewSet.as_view({'post': 'create', 'get': 'list_all'})),\n    path('content/posts/<str:Title>/',BlogPostModelViewSet.as_view({'get': 'list'})),\n    path('subscribestrategy/',UserStrategySubscribeViewSet.as_view({'post': 'create', 'get': 'list', 'delete': 'delete'}),),\n]",
+        "peekOfCode": "urlpatterns = [\n    path(\"api/users/\", include((\"api.routers\", \"api\"), namespace=\"api\")),\n    path('getstrategydata/', StrategyModelViewSet.as_view({'get': 'list'}), name='mymodel-list'),\n    path('positionalimage/<int:id>/',PositionalImageDownload.as_view()),\n    path('stocksymbolimage/<str:stocksymbol>/',StockSymbolImagesDownload.as_view()),\n    path('getperformancedata/', PerformanceDataViewSet.as_view()),\n    path('content/posts/',BlogPostModelViewSet.as_view({'post': 'create', 'get': 'list_all'})),\n    path('content/posts/<str:Title>/',BlogPostModelViewSet.as_view({'get': 'list'})),\n    path('subscribestrategy/',UserStrategySubscribeViewSet.as_view({'post': 'create', 'get': 'list', 'delete': 'delete'}),),\n    path('uploadmonthlymodel',UploadFileViewSet.as_view({'post': 'create', 'get': 'list'}),),",
         "detail": "core.urls",
         "documentation": {}
     },
@@ -2461,7 +2477,7 @@
         "kind": 6,
         "importPath": "monthlymodel.views",
         "description": "monthlymodel.views",
-        "peekOfCode": "class UploadFileViewSet(viewsets.ModelViewSet):\n    http_method_names = [\"post\"]\n    permission_classes = (IsAuthenticated,)\n    # permission_classes = (AllowAny,)\n    serializer_class = MonthlyDataModelSerializer\n    def create(self, request, *args, **kwargs):\n        print(\"upload strategy function running......\")\n        form_Data = request.POST\n        market = form_Data.get('market').upper()\n        print(market)",
+        "peekOfCode": "class UploadFileViewSet(viewsets.ModelViewSet):\n    http_method_names = [\"post\",\"get\"]\n    permission_classes = (IsAuthenticated,)\n    # permission_classes = (AllowAny,)\n    serializer_class = MonthlyDataModelSerializer\n    def create(self, request, *args, **kwargs):\n        print(\"upload strategy function running......\")\n        form_Data = request.POST\n        market = form_Data.get('market').upper()\n        print(market)",
         "detail": "monthlymodel.views",
         "documentation": {}
     },
@@ -2551,7 +2567,34 @@
         "kind": 5,
         "importPath": "monthlymodel.views",
         "description": "monthlymodel.views",
-        "peekOfCode": "cred = credentials.Certificate(\"toth-47f23-firebase-adminsdk-y8iji-4a0f8e77a6.json\")\nfirebase_admin.initialize_app(cred,{\"databaseURL\": \"https://toth-47f23-default-rtdb.asia-southeast1.firebasedatabase.app/\"})\nclass UploadFileViewSet(viewsets.ModelViewSet):\n    http_method_names = [\"post\"]\n    permission_classes = (IsAuthenticated,)\n    # permission_classes = (AllowAny,)\n    serializer_class = MonthlyDataModelSerializer\n    def create(self, request, *args, **kwargs):\n        print(\"upload strategy function running......\")\n        form_Data = request.POST",
+        "peekOfCode": "cred = credentials.Certificate(\"toth-47f23-firebase-adminsdk-y8iji-4a0f8e77a6.json\")\nfirebase_admin.initialize_app(cred,{\"databaseURL\": \"https://toth-47f23-default-rtdb.asia-southeast1.firebasedatabase.app/\"})\nDay = dt.now().day\nMonth = dt.now().strftime('%b')\nYear = dt.now().year\nclass UploadFileViewSet(viewsets.ModelViewSet):\n    http_method_names = [\"post\",\"get\"]\n    permission_classes = (IsAuthenticated,)\n    # permission_classes = (AllowAny,)\n    serializer_class = MonthlyDataModelSerializer",
+        "detail": "monthlymodel.views",
+        "documentation": {}
+    },
+    {
+        "label": "Day",
+        "kind": 5,
+        "importPath": "monthlymodel.views",
+        "description": "monthlymodel.views",
+        "peekOfCode": "Day = dt.now().day\nMonth = dt.now().strftime('%b')\nYear = dt.now().year\nclass UploadFileViewSet(viewsets.ModelViewSet):\n    http_method_names = [\"post\",\"get\"]\n    permission_classes = (IsAuthenticated,)\n    # permission_classes = (AllowAny,)\n    serializer_class = MonthlyDataModelSerializer\n    def create(self, request, *args, **kwargs):\n        print(\"upload strategy function running......\")",
+        "detail": "monthlymodel.views",
+        "documentation": {}
+    },
+    {
+        "label": "Month",
+        "kind": 5,
+        "importPath": "monthlymodel.views",
+        "description": "monthlymodel.views",
+        "peekOfCode": "Month = dt.now().strftime('%b')\nYear = dt.now().year\nclass UploadFileViewSet(viewsets.ModelViewSet):\n    http_method_names = [\"post\",\"get\"]\n    permission_classes = (IsAuthenticated,)\n    # permission_classes = (AllowAny,)\n    serializer_class = MonthlyDataModelSerializer\n    def create(self, request, *args, **kwargs):\n        print(\"upload strategy function running......\")\n        form_Data = request.POST",
+        "detail": "monthlymodel.views",
+        "documentation": {}
+    },
+    {
+        "label": "Year",
+        "kind": 5,
+        "importPath": "monthlymodel.views",
+        "description": "monthlymodel.views",
+        "peekOfCode": "Year = dt.now().year\nclass UploadFileViewSet(viewsets.ModelViewSet):\n    http_method_names = [\"post\",\"get\"]\n    permission_classes = (IsAuthenticated,)\n    # permission_classes = (AllowAny,)\n    serializer_class = MonthlyDataModelSerializer\n    def create(self, request, *args, **kwargs):\n        print(\"upload strategy function running......\")\n        form_Data = request.POST\n        market = form_Data.get('market').upper()",
         "detail": "monthlymodel.views",
         "documentation": {}
     },
